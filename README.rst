@@ -1,7 +1,7 @@
 pyLanguagetool
 ==============
 
-This is a python library and CLI to the LanguageTool_ `JSON API`_.
+This is a python library and CLI for the LanguageTool_ `JSON API`_.
 
 
 .. _LanguageTool: https://languagetool.org/

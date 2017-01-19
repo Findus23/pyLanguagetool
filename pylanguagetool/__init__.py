@@ -5,7 +5,11 @@ from pprint import pprint
 import configargparse
 from colorama import Fore
 
-from pylanguagetool import api
+from . import api
+
+indention = " " * 4
+tick = "\u2713" + " "
+cross = "\u2717" + " "
 
 
 def init_config():
@@ -48,7 +52,7 @@ def init_config():
     return c
 
 
-def get_input_text():
+def get_input_text(config):
     if sys.stdin.isatty():
         if config["input file"]:
             with open(config["input file"], 'r') as myfile:
@@ -60,55 +64,61 @@ def get_input_text():
         return "\n".join(sys.stdin.readlines())
 
 
-config = init_config()
+def print_errors(matches):
+    for error in matches:
+        context_object = error["context"]
+        context = context_object["text"]
+        length = context_object["length"]
+        offset = context_object["offset"]
 
-text = get_input_text()
-response = api.check(text, **config)
-indention = " " * 4
-tick = "\u2713" + " "
-cross = "\u2717" + " "
+        endpostion = offset + length
+        print(error["message"])
 
-for error in response["matches"]:
-    context_object = error["context"]
-    context = context_object["text"]
-    length = context_object["length"]
-    offset = context_object["offset"]
+        print(
+            indention[:2] +
+            Fore.LIGHTRED_EX + cross +
+            Fore.LIGHTBLACK_EX +
+            context[:offset] +
+            Fore.LIGHTRED_EX +
+            context[offset:endpostion] +
+            Fore.LIGHTBLACK_EX +
+            context[endpostion:]
+        )
+        print(
+            indention +
+            offset * " " +
+            Fore.LIGHTRED_EX +
+            length * "^" +
+            Fore.RESET
+        )
 
-    endpostion = offset + length
-    print(error["message"])
+        if error["replacements"]:
+            for replacement in error["replacements"]:
+                print(
+                    indention[:2] +
+                    Fore.LIGHTGREEN_EX + tick +
+                    Fore.LIGHTBLACK_EX +
+                    context[:offset] +
+                    Fore.LIGHTGREEN_EX +
+                    replacement["value"] +
+                    Fore.LIGHTBLACK_EX +
+                    context[endpostion:] +
+                    Fore.RESET
+                )
+            print()
 
-    print(
-        indention[:2] +
-        Fore.LIGHTRED_EX + cross +
-        Fore.LIGHTBLACK_EX +
-        context[:offset] +
-        Fore.LIGHTRED_EX +
-        context[offset:endpostion] +
-        Fore.LIGHTBLACK_EX +
-        context[endpostion:]
-    )
-    print(
-        indention +
-        offset * " " +
-        Fore.LIGHTRED_EX +
-        length * "^" +
-        Fore.RESET
-    )
 
-    if error["replacements"]:
-        for replacement in error["replacements"]:
-            print(
-                indention[:2] +
-                Fore.LIGHTGREEN_EX + tick +
-                Fore.LIGHTBLACK_EX +
-                context[:offset] +
-                Fore.LIGHTGREEN_EX +
-                replacement["value"] +
-                Fore.LIGHTBLACK_EX +
-                context[endpostion:] +
-                Fore.RESET
-            )
-        print()
+def main():
+    config = init_config()
 
-if len(response["matches"]) > 0:
-    sys.exit(1)
+    text = get_input_text(config)
+    response = api.check(text, **config)
+
+    print_errors(response["matches"])
+
+    if len(response["matches"]) > 0:
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
