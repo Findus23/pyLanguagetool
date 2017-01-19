@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
+import sys
 from pprint import pprint
 
 import configargparse
-import sys
 from colorama import Fore
 
 import languagetool
@@ -33,7 +34,6 @@ def init_config():
     p.add_argument("--enabled-only", action='store_true', default=False,
                    help="enable only the rules and categories whose IDs are specified with --enabled-rules or --enabled-categories"
                    )
-    p.add_argument('input file', help='input file', nargs='?')
 
     c = vars(p.parse_args())
     if c["enabled_only"] and (c["disabled_categories"] or c["disabled_rules"]):
@@ -48,11 +48,21 @@ def init_config():
     return c
 
 
+def get_input_text():
+    if sys.stdin.isatty():
+        if config["input file"]:
+            with open(config["input file"], 'r') as myfile:
+                return myfile.read()
+        else:
+            print("input file required")
+            sys.exit(2)
+    else:
+        return "\n".join(sys.stdin.readlines())
+
+
 config = init_config()
 
-text = """
-Dass ist eine Testsatz.
-"""
+text = get_input_text()
 response = languagetool.check(text, **config)
 indention = " " * 4
 tick = "\u2713" + " "
@@ -99,3 +109,6 @@ for error in response["matches"]:
                 Fore.RESET
             )
         print()
+
+if len(response["matches"]) > 0:
+    sys.exit(1)
