@@ -1,8 +1,8 @@
 import requests
 
 
-def get_languages():
-    r = requests.get(BASEURL + "languages")
+def get_languages(api_url):
+    r = requests.get(api_url + "languages")
     return r.json()
 
 

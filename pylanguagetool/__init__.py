@@ -5,7 +5,7 @@ from pprint import pprint
 import configargparse
 from colorama import Fore
 
-import languagetool
+from pylanguagetool import api
 
 
 def init_config():
@@ -63,7 +63,7 @@ def get_input_text():
 config = init_config()
 
 text = get_input_text()
-response = languagetool.check(text, **config)
+response = api.check(text, **config)
 indention = " " * 4
 tick = "\u2713" + " "
 cross = "\u2717" + " "
