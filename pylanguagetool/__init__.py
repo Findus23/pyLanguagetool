@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys
 from pprint import pprint
 
@@ -8,8 +7,9 @@ from colorama import Fore
 from . import api
 
 indention = " " * 4
-tick = "\u2713" + " "
-cross = "\u2717" + " "
+
+tick = Fore.LIGHTGREEN_EX + "\u2713" + Fore.RESET + " "
+cross = Fore.LIGHTRED_EX + "\u2717" + Fore.RESET + " "
 
 
 def init_config():
@@ -76,7 +76,7 @@ def print_errors(matches):
 
         print(
             indention[:2] +
-            Fore.LIGHTRED_EX + cross +
+            cross +
             Fore.LIGHTBLACK_EX +
             context[:offset] +
             Fore.LIGHTRED_EX +
@@ -96,7 +96,7 @@ def print_errors(matches):
             for replacement in error["replacements"]:
                 print(
                     indention[:2] +
-                    Fore.LIGHTGREEN_EX + tick +
+                    tick +
                     Fore.LIGHTBLACK_EX +
                     context[:offset] +
                     Fore.LIGHTGREEN_EX +
