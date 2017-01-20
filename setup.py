@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyLanguagetool',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     url='https://github.com/Findus23/pylanguagetool',
     license='MIT',
