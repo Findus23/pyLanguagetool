@@ -24,7 +24,7 @@ Basic Usage
 
 This will return a list of detected errors and possible replacements.
 
-.. code:: bash
+.. code::
 
     # Use "an" instead of 'a' if the following word starts with a vowel sound, e.g. 'an article', 'an hour'
     #   ✗ This is a example
@@ -42,7 +42,7 @@ For more information about the configuration file syntax, read the `ConfigArgPar
 Parameters
 ----------
 
-.. code:: bash
+.. code::
 
     languagetool --help
     usage: languagetool [-h] [-v] [-a API_URL] [-l LANG] [-m MOTHER_TONGUE]
