@@ -6,7 +6,7 @@ def get_languages(api_url):
     return r.json()
 
 
-def check(input_text,api_url, lang, mother_tongue=None, preferred_variants=None,
+def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None,
           enabled_rules=None, disabled_rules=None,
           enabled_categories=None, disabled_categories=None,
           enabled_only=False,

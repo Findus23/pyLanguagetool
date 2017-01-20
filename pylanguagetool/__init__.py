@@ -1,6 +1,7 @@
+from __future__ import print_function
+
 import sys
 from pprint import pprint
-
 import configargparse
 from colorama import Fore
 
@@ -8,8 +9,8 @@ from . import api
 
 indention = " " * 4
 
-tick = Fore.LIGHTGREEN_EX + "\u2713" + Fore.RESET + " "
-cross = Fore.LIGHTRED_EX + "\u2717" + Fore.RESET + " "
+tick = Fore.LIGHTGREEN_EX + u"\u2713" + Fore.RESET + " "
+cross = Fore.LIGHTRED_EX + u"\u2717" + Fore.RESET + " "
 
 
 def init_config():
@@ -30,7 +31,6 @@ def init_config():
     p.add_argument('-e', '--enabled-rules', env_var='ENABLED_RULES', help='IDs of rules to be enabled, comma-separated')
     p.add_argument('-d', '--disabled-rules', env_var='DISABLED_RULES',
                    help='IDs of rules to be disabled, comma-separated')
-    # "PLAIN_ENGLISH"
     p.add_argument('--enabled-categories', env_var='ENABLED_CATEGORIES',
                    help='IDs of categories to be enabled, comma-separated')
     p.add_argument('--disabled-categories', env_var='DISABLED_CATEGORIES',
@@ -111,6 +111,9 @@ def print_errors(matches):
 def main():
     config = init_config()
 
+    if config["verbose"]:
+        print(sys.version)
+
     text = get_input_text(config)
     response = api.check(text, **config)
 
@@ -118,7 +121,3 @@ def main():
 
     if len(response["matches"]) > 0:
         sys.exit(1)
-
-
-if __name__ == '__main__':
-    main()

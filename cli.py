@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import pylanguagetool
 
 pylanguagetool.main()
+
+input("test")
