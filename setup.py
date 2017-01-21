@@ -37,7 +37,7 @@ setup(
     ],
     install_requires=['colorama', 'configargparse', 'requests'],
     extras_require={
-        'dev': ["pytest", "docutils"],
+        'dev': ["pytest", "docutils", "pygments"],
     },
     keywords="languagetool spell grammar checker",
     entry_points={
