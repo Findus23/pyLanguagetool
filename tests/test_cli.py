@@ -8,7 +8,7 @@ def test_cli(capsys):
              'message': 'Use "a" instead of \'an\' if the following word doesn\'t start with a vowel sound, e.g. \'a sentence\', \'a university\'',
              'offset': 8, 'replacements': [{'value': 'a'}], 'shortMessage': 'Wrong article',
              'context': {'text': 'This is an test', 'offset': 8, 'length': 2}, 'length': 2}
-    should_output = """Use "a" instead of 'an' if the following word doesn't start with a vowel sound, e.g. 'a sentence', 'a university'
+    should_output = u"""Use "a" instead of 'an' if the following word doesn't start with a vowel sound, e.g. 'a sentence', 'a university'
   ✗ This is an test
             ^^
   ✓ This is a test
