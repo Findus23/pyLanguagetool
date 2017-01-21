@@ -14,7 +14,6 @@ python:
 #  - "pypy-5.3.1"
 # command to install dependencies
 install:
-  - pip install .
   - pip install -e .[dev]
 # command to run tests
 script: pytest
