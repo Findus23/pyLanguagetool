@@ -30,6 +30,9 @@ setup(
         "Topic :: Text Processing :: Linguistic"
     ],
     install_requires=['colorama', 'configargparse', 'requests'],
+    extras_require={
+        'dev': ["pytest"],
+    },
     keywords="languagetool spell grammar checker",
     entry_points={
         'console_scripts': [
