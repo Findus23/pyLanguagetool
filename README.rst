@@ -16,11 +16,11 @@ Basic Usage
 -----------
 .. code:: bash
 
-    $ echo "This is a example" | languagetool
+    $ echo "This is a example" | pylanguagetool
 
-    $ languagetool textfile.txt
+    $ pylanguagetool textfile.txt
 
-    $ languagetool < textfile.txt
+    $ pylanguagetool < textfile.txt
 
 This will return a list of detected errors and possible replacements.
 
@@ -44,8 +44,8 @@ Parameters
 
 .. code::
 
-    languagetool --help
-    usage: languagetool [-h] [-v] [-a API_URL] [-l LANG] [-m MOTHER_TONGUE]
+    $ pylanguagetool --help
+    usage: pylanguagetool [-h] [-v] [-a API_URL] [-l LANG] [-m MOTHER_TONGUE]
                         [-p PREFERRED_VARIANTS] [-e ENABLED_RULES]
                         [-d DISABLED_RULES]
                         [--enabled-categories ENABLED_CATEGORIES]

@@ -14,3 +14,4 @@ install:
 # command to run tests
 script:
   - python -m pytest
+  - python setup.py check -mrs
