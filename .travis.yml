@@ -18,4 +18,3 @@ install:
 # command to run tests
 script:
   - python -m pytest
-  - curl "https://languagetool.lw1.at/v2/languages"
