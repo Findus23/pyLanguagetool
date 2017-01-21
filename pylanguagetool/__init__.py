@@ -9,9 +9,6 @@ from . import api
 
 indention = " " * 4
 
-tick = Fore.LIGHTGREEN_EX + u"\u2713" + Fore.RESET + " "
-cross = Fore.LIGHTRED_EX + u"\u2717" + Fore.RESET + " "
-
 
 def init_config():
     p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"])
@@ -64,7 +61,16 @@ def get_input_text(config):
         return "\n".join(sys.stdin.readlines())
 
 
-def print_errors(matches):
+def print_errors(matches, print_color=True):
+    def colored(text, color):
+        if print_color:
+            return color + text + Fore.RESET
+        else:
+            return text
+
+    tick = colored(u"\u2713", Fore.LIGHTGREEN_EX) + " "
+    cross = colored(u"\u2717", Fore.LIGHTRED_EX) + " "
+
     for error in matches:
         context_object = error["context"]
         context = context_object["text"]
@@ -77,19 +83,14 @@ def print_errors(matches):
         print(
             indention[:2] +
             cross +
-            Fore.LIGHTBLACK_EX +
-            context[:offset] +
-            Fore.LIGHTRED_EX +
-            context[offset:endpostion] +
-            Fore.LIGHTBLACK_EX +
-            context[endpostion:]
+            colored(context[:offset], Fore.LIGHTBLACK_EX) +
+            colored(context[offset:endpostion], Fore.LIGHTRED_EX) +
+            colored(context[endpostion:], Fore.LIGHTBLACK_EX)
         )
         print(
             indention +
             offset * " " +
-            Fore.LIGHTRED_EX +
-            length * "^" +
-            Fore.RESET
+            colored(length * "^", Fore.LIGHTRED_EX)
         )
 
         if error["replacements"]:
@@ -97,13 +98,9 @@ def print_errors(matches):
                 print(
                     indention[:2] +
                     tick +
-                    Fore.LIGHTBLACK_EX +
-                    context[:offset] +
-                    Fore.LIGHTGREEN_EX +
-                    replacement["value"] +
-                    Fore.LIGHTBLACK_EX +
-                    context[endpostion:] +
-                    Fore.RESET
+                    colored(context[:offset], Fore.LIGHTBLACK_EX) +
+                    colored(replacement["value"], Fore.LIGHTGREEN_EX) +
+                    colored(context[endpostion:], Fore.LIGHTBLACK_EX)
                 )
             print()
 
