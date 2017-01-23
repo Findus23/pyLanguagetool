@@ -15,6 +15,7 @@ def init_config():
     p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"])
     p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true')
     p.add_argument("-a", "--api-url", env_var="API_URL", default="https://languagetool.org/api/v2/")
+    p.add_argument("--no-color", env_var="NO_COLOR", action='store_true', default=False, help="don't color output")
     p.add_argument('input file', help='input file', nargs='?')
 
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
@@ -116,7 +117,7 @@ def main():
     text = get_input_text(config)
     response = api.check(text, **config)
 
-    print_errors(response["matches"])
+    print_errors(response["matches"], not config["no_color"])
 
     if len(response["matches"]) > 0:
         sys.exit(1)
