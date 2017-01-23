@@ -3,5 +3,3 @@
 import pylanguagetool
 
 pylanguagetool.main()
-
-input("test")
