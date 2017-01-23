@@ -69,6 +69,7 @@ Parameters
       -a API_URL, --api-url API_URL
                             [env var: API_URL]
       --no-color            don't color output [env var: NO_COLOR]
+      -c, --clipboard       get text from system clipboard [env var: CLIPBOARD]
       -l LANG, --lang LANG  A language code like en or en-US, or auto to guess the
                             language automatically (see preferredVariants below).
                             For languages with variants (English, German,

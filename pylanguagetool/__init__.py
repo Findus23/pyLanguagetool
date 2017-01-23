@@ -16,6 +16,8 @@ def init_config():
     p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true')
     p.add_argument("-a", "--api-url", env_var="API_URL", default="https://languagetool.org/api/v2/")
     p.add_argument("--no-color", env_var="NO_COLOR", action='store_true', default=False, help="don't color output")
+    p.add_argument("-c", "--clipboard", env_var="CLIPBOARD", action='store_true', default=False,
+                   help="get text from system clipboard")
     p.add_argument('input file', help='input file', nargs='?')
 
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
@@ -51,16 +53,34 @@ def init_config():
     return c
 
 
+def get_clipboard():
+    """
+    http://stackoverflow.com/a/16189232
+    :rtype string
+    """
+    try:
+        import Tkinter as tk  # Python2
+    except ImportError:
+        import tkinter as tk  # Python3
+
+    root = tk.Tk()
+    root.withdraw()  # keep the window from showing
+    clipboard = root.clipboard_get()  # read the clipboard
+    root.destroy()
+    return clipboard
+
+
 def get_input_text(config):
-    if sys.stdin.isatty():
+    if not sys.stdin.isatty():  # if piped into script
+        return "\n".join(sys.stdin.readlines())  # read text from pipe
+    elif config["clipboard"]:
+        return get_clipboard()
+    else:
         if config["input file"]:
             with open(config["input file"], 'r') as myfile:
                 return myfile.read()
-        else:
-            print("input file required")
-            sys.exit(2)
-    else:
-        return "\n".join(sys.stdin.readlines())
+        print("input file required")
+        sys.exit(2)
 
 
 def print_errors(matches, print_color=True):
