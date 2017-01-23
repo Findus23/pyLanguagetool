@@ -4,7 +4,7 @@ from __future__ import print_function
 import sys
 from pprint import pprint
 import configargparse
-from colorama import Fore
+from colorama import Fore, init as init_colors
 
 from . import api
 
@@ -65,6 +65,7 @@ def get_input_text(config):
 def print_errors(matches, print_color=True):
     def colored(text, color):
         if print_color:
+            init_colors()
             return color + text + Fore.RESET
         else:
             return text
