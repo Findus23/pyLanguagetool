@@ -22,6 +22,8 @@ Basic Usage
 
     $ pylanguagetool < textfile.txt
 
+    $ pylanguagetool -c # get text from system clipboard
+
 This will return a list of detected errors and possible replacements.
 
 .. code::
