@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pyLanguagetool',
-    version='0.2.0',
+    version='0.2.1',
     packages=find_packages(),
     url='https://github.com/Findus23/pylanguagetool',
     license='MIT',
@@ -35,7 +35,7 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Text Processing :: Linguistic'
     ],
-    install_requires=['colorama', 'configargparse', 'requests'],
+    install_requires=['colorama>=0.3.7', 'configargparse>=0.11.0', 'requests>=2.13.0'],
     extras_require={
         'dev': ["pytest", "docutils", "pygments"],
     },
