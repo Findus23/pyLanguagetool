@@ -83,7 +83,7 @@ def get_input_text(config):
         sys.exit(2)
 
 
-def print_errors(matches, print_color=True):
+def print_errors(matches, api_url, print_color=True):
     def colored(text, color):
         if print_color:
             init_colors()
@@ -117,7 +117,8 @@ def print_errors(matches, print_color=True):
         )
 
         if error["replacements"]:
-            for replacement in error["replacements"]:
+            # only print first 5 replacements
+            for replacement in error["replacements"][:5]:
                 print(
                     indention[:2] +
                     tick +
@@ -125,7 +126,8 @@ def print_errors(matches, print_color=True):
                     colored(replacement["value"], Fore.LIGHTGREEN_EX) +
                     colored(context[endpostion:], Fore.LIGHTBLACK_EX)
                 )
-            print()
+        print()
+    print(colored("Text checked by {url}".format(url=api_url), Fore.LIGHTBLACK_EX))
 
 
 def main():
@@ -137,7 +139,7 @@ def main():
     text = get_input_text(config)
     response = api.check(text, **config)
 
-    print_errors(response["matches"], not config["no_color"])
+    print_errors(response["matches"], config["api_url"], not config["no_color"])
 
     if len(response["matches"]) > 0:
         sys.exit(1)
