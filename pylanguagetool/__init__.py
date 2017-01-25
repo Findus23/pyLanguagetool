@@ -72,7 +72,9 @@ def get_clipboard():
 
 def get_input_text(config):
     if not sys.stdin.isatty():  # if piped into script
-        return "\n".join(sys.stdin.readlines())  # read text from pipe
+        lines = [line.rstrip() for line in sys.stdin.readlines() if line.rstrip()]
+        print(lines)
+        return "\n".join(lines)  # read text from pipe and remove empty lines
     elif config["clipboard"]:
         return get_clipboard()
     else:

@@ -17,7 +17,7 @@ def test_cli(capsys):
                 'shortMessage': '',
                 'context': {
                     'length': 3,
-                    'text': 'das ist ein est ',
+                    'text': 'das ist ein est',
                     'offset': 0
                 },
                 'replacements':
@@ -38,7 +38,7 @@ def test_cli(capsys):
              'shortMessage': 'Rechtschreibfehler',
              'context':
                  {'length': 3,
-                  'text': 'das ist ein est ',
+                  'text': 'das ist ein est',
                   'offset': 12
                   },
              'replacements':
@@ -68,18 +68,18 @@ def test_cli(capsys):
     }
 
     should_output = u"""Dieser Satz fängt nicht mit einem großgeschriebenen Wort an
-  ✗ das ist ein est\u0020
+  ✗ das ist ein est
     ^^^
-  ✓ Das ist ein est\u0020
+  ✓ Das ist ein est
 
 Möglicher Rechtschreibfehler gefunden
-  ✗ das ist ein est\u0020
+  ✗ das ist ein est
                 ^^^
-  ✓ das ist ein esst\u0020
-  ✓ das ist ein ist\u0020
-  ✓ das ist ein es\u0020
-  ✓ das ist ein erst\u0020
-  ✓ das ist ein fest\u0020
+  ✓ das ist ein esst
+  ✓ das ist ein ist
+  ✓ das ist ein es
+  ✓ das ist ein erst
+  ✓ das ist ein fest
 
 Text checked by https://example.com/v2/
 """

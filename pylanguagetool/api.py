@@ -10,7 +10,7 @@ def get_languages(api_url):
 def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None,
           enabled_rules=None, disabled_rules=None,
           enabled_categories=None, disabled_categories=None,
-          enabled_only=False,
+          enabled_only=False, verbose=False,
           **kwargs):
     post_parameters = {
         "text": input_text,
@@ -33,4 +33,7 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
     r = requests.post(api_url + "check", data=post_parameters)
     if r.status_code != 200:
         raise ValueError(r.text)
+    if verbose:
+        print(post_parameters)
+        print(r.json())
     return r.json()
