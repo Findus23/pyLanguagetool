@@ -43,7 +43,7 @@ def ipynb2markdown(ipynb):
     j = json.loads(ipynb)
     markdown = ""
     for cell in j["cells"]:
-        markdown += "".join(cell["source"])
+        markdown += "".join(cell["source"]) + "\n"
     return markdown
 
 
@@ -53,7 +53,7 @@ def rst2html(rst):
     except ImportError:
         notinstalled("markdown2", "markdown", "HTML")
         sys.exit(4)
-    return publish_string(rst,writer_name="html5")
+    return publish_string(rst, writer_name="html5")
 
 
 def notinstalled(package, convert_from, convert_to):

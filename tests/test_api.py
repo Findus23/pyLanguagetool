@@ -21,5 +21,4 @@ def test_request():
     response = api.check("This is an test", API_BASE_URL, "auto")
     assert "software" in response
     match = response["matches"][0]
-    print(match)
     assert isinstance(match, dict)
