@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
+import os
 import sys
 from pprint import pprint
 import configargparse
 from colorama import Fore, init as init_colors
 
 from . import api
+from . import converters
 
 indention = " " * 4
 
@@ -18,6 +20,9 @@ def init_config():
     p.add_argument("--no-color", env_var="NO_COLOR", action='store_true', default=False, help="don't color output")
     p.add_argument("-c", "--clipboard", env_var="CLIPBOARD", action='store_true', default=False,
                    help="get text from system clipboard")
+    p.add_argument("-t", "--input-type", env_var="CLIPBOARD", default="txt",
+                   choices=["txt", "html", "md", "rst", "ipynb"],
+                   help="if not plaintext")
     p.add_argument('input file', help='input file', nargs='?')
 
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
@@ -71,16 +76,24 @@ def get_clipboard():
 
 
 def get_input_text(config):
+    """
+    get text from stdin, clipboard or file
+    :rtype: (string,string)
+    """
     if not sys.stdin.isatty():  # if piped into script
         lines = [line.rstrip() for line in sys.stdin.readlines() if line.rstrip()]
-        print(lines)
-        return "\n".join(lines)  # read text from pipe and remove empty lines
+        return "\n".join(lines), None  # read text from pipe and remove empty lines
     elif config["clipboard"]:
-        return get_clipboard()
+        return get_clipboard(), None
     else:
         if config["input file"]:
-            with open(config["input file"], 'r') as myfile:
-                return myfile.read()
+            extension = os.path.splitext(config["input file"])[1][1:]  # get file extention without .
+            try:
+                with open(config["input file"], 'r') as myfile:
+                    return myfile.read(), extension
+            except UnicodeDecodeError:
+                print("can't read text")
+                sys.exit(1)
         print("input file required")
         sys.exit(2)
 
@@ -138,8 +151,11 @@ def main():
     if config["verbose"]:
         print(sys.version)
 
-    text = get_input_text(config)
-    response = api.check(text, **config)
+    input_text, inputtype = get_input_text(config)
+    if not inputtype:
+        inputtype = config["input_type"]
+    check_text = converters.convert(input_text, inputtype)
+    response = api.check(check_text, **config)
 
     print_errors(response["matches"], config["api_url"], not config["no_color"])
 

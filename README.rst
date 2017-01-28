@@ -72,6 +72,8 @@ Parameters
                             [env var: API_URL]
       --no-color            don't color output [env var: NO_COLOR]
       -c, --clipboard       get text from system clipboard [env var: CLIPBOARD]
+      -t {txt,html,md,rst,ipynb}, --input-type {txt,html,md,rst,ipynb}
+                            if not plaintext [env var: CLIPBOARD]
       -l LANG, --lang LANG  A language code like en or en-US, or auto to guess the
                             language automatically (see preferredVariants below).
                             For languages with variants (English, German,
