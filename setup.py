@@ -38,7 +38,7 @@ setup(
     install_requires=['colorama>=0.3.7', 'configargparse>=0.11.0', 'requests>=2.13.0'],
     extras_require={
         'dev': ["pytest", "docutils", "pygments"],
-        'optional': ["beautifulsoup", "markdown2", "docutils"],
+        'optional': ["beautifulsoup4", "markdown2", "docutils"],
     },
     keywords="languagetool spell grammar checker",
     entry_points={
