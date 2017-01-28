@@ -20,6 +20,7 @@ install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install .[dev]"
+  - "%PYTHON%\\python.exe -m pip install .[optional]"
 
 build: off
 
