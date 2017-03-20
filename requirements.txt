@@ -8,10 +8,10 @@ docutils==0.13.1
 markdown2==2.3.3
 packaging==16.8
 pkginfo==1.4.1
-py==1.4.32
+py==1.4.33
 Pygments==2.2.0
 pyparsing==2.2.0
-pytest==3.0.6
+pytest==3.0.7
 requests==2.13.0
 requests-toolbelt==0.7.1
 six==1.10.0
