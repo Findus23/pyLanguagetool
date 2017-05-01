@@ -5,7 +5,7 @@ clint==0.5.1
 colorama==0.3.9
 ConfigArgParse==0.11.0
 docutils==0.13.1
-markdown2==2.3.3
+markdown2==2.3.4
 packaging==16.8
 pkginfo==1.4.1
 py==1.4.33
