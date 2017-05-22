@@ -13,6 +13,6 @@ Pygments==2.2.0
 pyparsing==2.2.0
 pytest==3.0.7
 requests==2.14.2
-requests-toolbelt==0.7.1
+requests-toolbelt==0.8.0
 six==1.10.0
 twine==1.8.1
