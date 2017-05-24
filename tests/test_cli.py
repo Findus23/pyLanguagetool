@@ -81,8 +81,8 @@ Möglicher Rechtschreibfehler gefunden
   ✓ das ist ein erst
   ✓ das ist ein fest
 
-Text checked by https://example.com/v2/
+Text checked by https://example.com/v2/ (Test 1.0)
 """
-    pylanguagetool.print_errors(response["matches"], "https://example.com/v2/", False)
+    pylanguagetool.print_errors(response["matches"], "https://example.com/v2/","Test 1.0", False)
     out, err = capsys.readouterr()
     assert out == should_output
