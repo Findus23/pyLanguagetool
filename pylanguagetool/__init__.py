@@ -98,7 +98,7 @@ def get_input_text(config):
         sys.exit(2)
 
 
-def print_errors(matches, api_url, print_color=True):
+def print_errors(matches, api_url, version, print_color=True):
     def colored(text, color):
         if print_color:
             init_colors()
@@ -142,7 +142,7 @@ def print_errors(matches, api_url, print_color=True):
                     colored(context[endpostion:], Fore.LIGHTBLACK_EX)
                 )
         print()
-    print(colored("Text checked by {url}".format(url=api_url), Fore.LIGHTBLACK_EX))
+    print(colored("Text checked by {url} ({version})".format(url=api_url, version=version), Fore.LIGHTBLACK_EX))
 
 
 def main():
@@ -157,7 +157,11 @@ def main():
     check_text = converters.convert(input_text, inputtype)
     response = api.check(check_text, **config)
 
-    print_errors(response["matches"], config["api_url"], not config["no_color"])
+    print_errors(response["matches"],
+                 config["api_url"],
+                 response["software"]["name"] + " " + response["software"]["version"],
+                 not config["no_color"]
+                 )
 
     if len(response["matches"]) > 0:
         sys.exit(1)
