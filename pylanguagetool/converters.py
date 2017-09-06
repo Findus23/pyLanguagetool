@@ -11,6 +11,8 @@ def convert(source, texttype):
         return html2text(rst2html(source))
     if texttype == "ipynb":
         return html2text(markdown2html(ipynb2markdown(source)))
+    if texttype == "json":
+        return transifexjson2txt(source)
     if texttype != "txt":
         print("filetype not detected, assuming plaintext")
     return source
@@ -55,6 +57,15 @@ def rst2html(rst):
         sys.exit(4)
     return publish_string(rst, writer_name="html5")
 
+
+def transifexjson2txt(jsondata):
+    data = json.loads(jsondata)
+    text = ""
+    for category, content in data.items():
+        for key, value in content.items():
+            print(value)
+            text += value + "\n"
+    return text
 
 def notinstalled(package, convert_from, convert_to):
     print(
