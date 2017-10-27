@@ -26,7 +26,7 @@ def html2text(html):
         sys.exit(4)
     soup = BeautifulSoup(html, "html.parser")
     # remove scripts from html
-    for script in soup(["script", "style"]):
+    for script in soup(["script", "style", "code", "pre"]):
         script.extract()
     return soup.get_text()
 
@@ -66,6 +66,7 @@ def transifexjson2txt(jsondata):
             print(value)
             text += value + "\n"
     return text
+
 
 def notinstalled(package, convert_from, convert_to):
     print(
