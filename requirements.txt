@@ -11,8 +11,8 @@ pkginfo==1.4.1
 py==1.4.34
 Pygments==2.2.0
 pyparsing==2.2.0
-pytest==3.2.1
+pytest==3.2.3
 requests==2.18.4
 requests-toolbelt==0.8.0
-six==1.10.0
+six==1.11.0
 twine==1.9.1
