@@ -8,7 +8,7 @@ docutils==0.14
 markdown2==2.3.5
 packaging==16.8
 pkginfo==1.4.1
-py==1.4.34
+py==1.5.2
 Pygments==2.2.0
 pyparsing==2.2.0
 pytest==3.2.1
