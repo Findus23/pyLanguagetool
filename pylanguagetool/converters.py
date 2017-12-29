@@ -1,5 +1,6 @@
 import json
 import sys
+import xml.etree.ElementTree
 
 
 def convert(source, texttype):
@@ -13,6 +14,8 @@ def convert(source, texttype):
         return html2text(markdown2html(ipynb2markdown(source)))
     if texttype == "json":
         return transifexjson2txt(source)
+    if texttype == "xliff":
+        return xliff2txt(source)
     if texttype != "txt":
         print("filetype not detected, assuming plaintext")
     return source
@@ -63,8 +66,18 @@ def transifexjson2txt(jsondata):
     text = ""
     for category, content in data.items():
         for key, value in content.items():
-            print(value)
             text += value + "\n"
+    return text
+
+
+def xliff2txt(source):
+    root = xml.etree.ElementTree.fromstring(source)
+    text = ""
+    for file in root:
+        for body in file:
+            for trans_unit in body:
+                value = trans_unit[0].text
+                text += value + "\n\n"
     return text
 
 
