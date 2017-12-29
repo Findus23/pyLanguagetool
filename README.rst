@@ -72,6 +72,7 @@ Parameters
                             [env var: API_URL]
       --no-color            don't color output [env var: NO_COLOR]
       -c, --clipboard       get text from system clipboard [env var: CLIPBOARD]
+      -s, --single-line     check every line on its own [env var: SINGLE_LINE]
       -t {txt,html,md,rst,ipynb}, --input-type {txt,html,md,rst,ipynb}
                             if not plaintext [env var: CLIPBOARD]
       -l LANG, --lang LANG  A language code like en or en-US, or auto to guess the

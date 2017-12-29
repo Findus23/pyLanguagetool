@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import os
 import sys
 from pprint import pprint
+
 import configargparse
+import os
 from colorama import Fore, init as init_colors
 
 from . import api
@@ -20,6 +21,8 @@ def init_config():
     p.add_argument("--no-color", env_var="NO_COLOR", action='store_true', default=False, help="don't color output")
     p.add_argument("-c", "--clipboard", env_var="CLIPBOARD", action='store_true', default=False,
                    help="get text from system clipboard")
+    p.add_argument("-s", "--single-line", env_var="SINGLE_LINE", action='store_true', default=False,
+                   help="check every line on its own")
     p.add_argument("-t", "--input-type", env_var="CLIPBOARD", default="txt",
                    choices=["txt", "html", "md", "rst", "ipynb"],
                    help="if not plaintext")
@@ -155,13 +158,27 @@ def main():
     if not inputtype:
         inputtype = config["input_type"]
     check_text = converters.convert(input_text, inputtype)
-    response = api.check(check_text, **config)
+    if config["single_line"]:
+        found = False
+        for line in check_text.splitlines():
+            response = api.check(line, **config)
+            print_errors(response["matches"],
+                         config["api_url"],
+                         response["software"]["name"] + " " + response["software"]["version"],
+                         not config["no_color"]
+                         )
+            if len(response["matches"]) > 0:
+                found = True
+        if found:
+            sys.exit(1)
 
-    print_errors(response["matches"],
-                 config["api_url"],
-                 response["software"]["name"] + " " + response["software"]["version"],
-                 not config["no_color"]
-                 )
+    else:
+        response = api.check(check_text, **config)
+        print_errors(response["matches"],
+                     config["api_url"],
+                     response["software"]["name"] + " " + response["software"]["version"],
+                     not config["no_color"]
+                     )
 
-    if len(response["matches"]) > 0:
-        sys.exit(1)
+        if len(response["matches"]) > 0:
+            sys.exit(1)
