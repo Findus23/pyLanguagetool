@@ -25,7 +25,7 @@ def html2text(html):
     try:
         from bs4 import BeautifulSoup
     except ImportError:
-        notinstalled("beautifulsoup", "HTML", "text")
+        notinstalled("beautifulsoup4", "HTML", "text")
         sys.exit(4)
     soup = BeautifulSoup(html, "html.parser")
     # remove scripts from html
@@ -56,7 +56,7 @@ def rst2html(rst):
     try:
         from docutils.core import publish_string
     except ImportError:
-        notinstalled("markdown2", "markdown", "HTML")
+        notinstalled("docutils", "ReStructuredText", "HTML")
         sys.exit(4)
     return publish_string(rst, writer_name="html5")
 
