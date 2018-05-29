@@ -29,10 +29,31 @@ pipeline {
         }
       }
     }
+    stage('build') {
+      parallel {
+        stage('sdist') {
+          steps {
+            sh 'python setup.py sdist'
+          }
+        }
+        stage('bdist_wheel') {
+          steps {
+            sh 'python setup.py bdist_wheel'
+          }
+        }
+      }
+    }
+    stage('artefacts') {
+      steps {
+        archiveArtifacts 'dist'
+      }
+    }
   }
   post {
     always {
       junit 'junit.xml'
+
     }
-  } 
+
+  }
 }
