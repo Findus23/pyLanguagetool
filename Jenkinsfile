@@ -16,7 +16,7 @@ pipeline {
       parallel {
         stage('pytest') {
           steps {
-            sh 'python -m pytest'
+            sh 'python -m pytest  --junitxml=junit.xml'
           }
         }
         stage('setup test') {
@@ -24,6 +24,11 @@ pipeline {
             sh 'python setup.py check -ms'
           }
         }
+      }
+    }
+    stage('') {
+      steps {
+        junit 'junit.xml'
       }
     }
   }
