@@ -29,10 +29,10 @@ pipeline {
         }
       }
     }
-    stage('error') {
-      steps {
-        junit 'junit.xml'
-      }
-    }
   }
+  post {
+    always {
+      junit 'junit.xml'
+    }
+  } 
 }
