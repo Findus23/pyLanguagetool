@@ -15,6 +15,9 @@ pipeline {
     stage('tests') {
       parallel {
         stage('pytest') {
+          environment {
+            API_URL = 'https://languagetool.org/v2/'
+          }
           steps {
             sh 'python -m pytest  --junitxml=junit.xml'
           }
@@ -26,13 +29,10 @@ pipeline {
         }
       }
     }
-    stage('') {
+    stage('error') {
       steps {
         junit 'junit.xml'
       }
     }
-  }
-  environment {
-    API_URL = 'https://languagetool.org/api/v2/'
   }
 }
