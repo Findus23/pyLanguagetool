@@ -43,11 +43,6 @@ pipeline {
         }
       }
     }
-    stage('artefacts') {
-      steps {
-        archiveArtifacts 'dist'
-      }
-    }
   }
   post {
     always {
