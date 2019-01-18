@@ -1,6 +1,5 @@
 image: python:3.6
 
-
 before_script:
   - pip install -e .[dev]
   - pip install -e .[optional]
@@ -11,7 +10,6 @@ tests:
   artifacts:
     reports:
       junit: junit.xml
-
 
 check:
   stage: check
