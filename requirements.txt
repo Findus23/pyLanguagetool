@@ -2,17 +2,18 @@ appdirs==1.4.3
 args==0.1.0
 atomicwrites==1.1.5
 attrs==18.1.0
-beautifulsoup4==4.6.3
+beautifulsoup4==4.7.1
 certifi==2018.8.13
 chardet==3.0.4
 clint==0.5.1
-colorama==0.3.9
+colorama==0.4.1
 ConfigArgParse==0.13.0
 docutils==0.14
 idna==2.7
-markdown2==2.3.5
+markdown2==2.3.7
 more-itertools==4.3.0
 packaging==17.1
+pkg-resources==0.0.0
 pkginfo==1.4.2
 pluggy==0.7.1
 py==1.5.4
@@ -20,9 +21,10 @@ Pygments==2.2.0
 -e git+git@github.com:Findus23/pyLanguagetool.git@23ab041faaf15e9cccbcea132ff8fec891f48c72#egg=pyLanguagetool
 pyparsing==2.2.0
 pytest==3.7.2
-requests==2.19.1
+requests==2.21.0
 requests-toolbelt==0.8.0
 six==1.11.0
+soupsieve==1.7.2
 tqdm==4.25.0
 twine==1.11.0
 urllib3==1.23
