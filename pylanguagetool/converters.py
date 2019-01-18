@@ -48,7 +48,8 @@ def ipynb2markdown(ipynb):
     j = json.loads(ipynb)
     markdown = ""
     for cell in j["cells"]:
-        markdown += "".join(cell["source"]) + "\n"
+        if cell["cell_type"] == "markdown":
+            markdown += "".join(cell["source"]) + "\n"
     return markdown
 
 
