@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
+import os
 import sys
 from pprint import pprint
 
 import configargparse
-import os
 from colorama import Fore, init as init_colors
 
 from . import api

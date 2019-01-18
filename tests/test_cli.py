@@ -83,6 +83,6 @@ Möglicher Rechtschreibfehler gefunden
 
 Text checked by https://example.com/v2/ (Test 1.0)
 """
-    pylanguagetool.print_errors(response["matches"], "https://example.com/v2/","Test 1.0", False)
+    pylanguagetool.print_errors(response["matches"], "https://example.com/v2/", "Test 1.0", False)
     out, err = capsys.readouterr()
     assert out == should_output
