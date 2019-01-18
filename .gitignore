@@ -93,4 +93,4 @@ ENV/
 # Rope project settings
 .ropeproject
 
-testsatz.md
+.mypy_cache/
