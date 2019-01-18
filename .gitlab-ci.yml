@@ -6,21 +6,24 @@ before_script:
   - pip install -e .[optional]
 
 tests:
-  script:
-  - python -m pytest  --junitxml=junit.xml
+  stage: tests
+  script: python -m pytest  --junitxml=junit.xml
   artifacts:
     reports:
       junit: junit.xml
 
 
 check:
-  script:
-  - python setup.py check -ms
+  stage: check
+  script: python setup.py check -ms
 
-build:
-  script:
-  - python setup.py sdist
-  - python setup.py bdist_wheel
+sdist:
+  stage: build
+  script: python setup.py sdist
+
+bdist:
+  stage: build
+  script: python setup.py bdist_wheel
 
 stages:
   - check
