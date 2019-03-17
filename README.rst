@@ -47,13 +47,14 @@ Parameters
 .. code::
 
     $ pylanguagetool --help
-    usage: pylanguagetool [-h] [-v] [-a API_URL] [-l LANG] [-m MOTHER_TONGUE]
-                        [-p PREFERRED_VARIANTS] [-e ENABLED_RULES]
-                        [-d DISABLED_RULES]
-                        [--enabled-categories ENABLED_CATEGORIES]
-                        [--disabled-categories DISABLED_CATEGORIES]
-                        [--enabled-only]
-                        [input file]
+    usage: pylanguagetool [-h] [-v] [-a API_URL] [--no-color] [-c] [-s]
+                          [-t {txt,html,md,rst,ipynb}] [-l LANG]
+                          [-m MOTHER_TONGUE] [-p PREFERRED_VARIANTS]
+                          [-e ENABLED_RULES] [-d DISABLED_RULES]
+                          [--enabled-categories ENABLED_CATEGORIES]
+                          [--disabled-categories DISABLED_CATEGORIES]
+                          [--enabled-only]
+                          [input file]
 
     Args that start with '--' (eg. -v) can also be set in a config file
     (~/.config/pyLanguagetool.conf). Config file syntax allows: key=value,
@@ -69,7 +70,8 @@ Parameters
       -h, --help            show this help message and exit
       -v, --verbose         [env var: VERBOSE]
       -a API_URL, --api-url API_URL
-                            [env var: API_URL]
+                            the URL of the v2 languagetool API, should end with
+                            '/v2/' [env var: API_URL]
       --no-color            don't color output [env var: NO_COLOR]
       -c, --clipboard       get text from system clipboard [env var: CLIPBOARD]
       -s, --single-line     check every line on its own [env var: SINGLE_LINE]
