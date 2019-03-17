@@ -30,7 +30,7 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
         post_parameters["enabledCategories"] = disabled_categories
     if enabled_only:
         post_parameters["enabledOnly"] = True
-    r = requests.post(api_url + "check", data=post_parameters)
+    r = requests.post(api_url + "/v2/check", data=post_parameters)
     if r.status_code != 200:
         raise ValueError(r.text)
     if verbose:
