@@ -1,30 +1,41 @@
+==============
 pyLanguagetool
-^^^^^^^^^^^^^^
+==============
 |travis| |license| |latestrelease| |pypi_versions|
 
-This is a python library and CLI for the LanguageTool_ `JSON API`_.
+A python library and CLI for the LanguageTool_ `JSON API`_.
+
+LanguageTool_ is an open source spellchecking platform. It supports a large
+variety of
 
 Installation
 ------------
-pyLanguagetool can be installed with pip:
+pyLanguagetool can be installed with pip/pipenv:
 
 .. code:: bash
 
-    $ pip install pylanguagetool
+    pip install pylanguagetool
+    # or via pipenv
+    pipenv install pylanguagetool
 
 Basic Usage
 -----------
 .. code:: bash
 
-    $ echo "This is a example" | pylanguagetool
+    # pipe text to pylanguagetool
+    echo "This is a example" | pylanguagetool
 
-    $ pylanguagetool textfile.txt
+    # read text from a file
+    pylanguagetool textfile.txt
 
-    $ pylanguagetool < textfile.txt
+    # read text from stdin
+    pylanguagetool < textfile.txt
 
-    $ pylanguagetool -c # get text from system clipboard
+    # read text from the systems clipboard
+    pylanguagetool -c # get text from system clipboard
 
-This will return a list of detected errors and possible replacements.
+All samples above will return a list of detected errors and possible
+replacements.
 
 .. code::
 
