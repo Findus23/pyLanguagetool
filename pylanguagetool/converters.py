@@ -29,7 +29,7 @@ def html2text(html):
         sys.exit(4)
     soup = BeautifulSoup(html, "html.parser")
     # remove scripts from html
-    for script in soup(["script", "style", "code", "pre"]):
+    for script in soup(["script", "style", "code", "pre"]) + soup("span", {"class": "literal"}):
         script.extract()
     return soup.get_text()
 

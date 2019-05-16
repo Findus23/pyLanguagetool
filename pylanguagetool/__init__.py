@@ -49,6 +49,13 @@ def init_config():
     p.add_argument("--enabled-only", action='store_true', default=False,
                    help="enable only the rules and categories whose IDs are specified with --enabled-rules or --enabled-categories"
                    )
+    p.add_argument(
+        '--pwl', '--personal-word-list',
+        env_var='PERSONAL_WORD_LIST', help=(
+            'File name of personal dictionary. A private dictionary'
+            ' can be used to add special words that would otherwise'
+            ' be marked as spelling errors.'
+        ))
 
     c = vars(p.parse_args())
     if c["enabled_only"] and (c["disabled_categories"] or c["disabled_rules"]):
@@ -165,6 +172,10 @@ def main():
 
     if config["verbose"]:
         print(sys.version)
+
+    if config['pwl']:
+        with open(config['pwl'], 'r') as fs:
+            config['pwl'] = [w.strip() for w in fs.readlines()]
 
     input_text, inputtype = get_input_text(config)
     if not inputtype:

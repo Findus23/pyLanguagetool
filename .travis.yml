@@ -18,3 +18,4 @@ script:
   - python -m pytest
   - python setup.py check -ms
   - python setup.py build_sphinx -W
+  - pylanguagetool --pwl spelling.txt --disabled-rules=WHITESPACE_RULE README.rst

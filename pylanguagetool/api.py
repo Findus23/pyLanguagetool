@@ -41,10 +41,18 @@ def get_languages(api_url):
     return r.json()
 
 
+def _is_in_pwl(match, pwl):
+    start = match['context']['offset']
+    end = start + match['context']['length']
+    word = match['context']['text'][start:end]
+    return word in pwl
+
+
 def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None,
           enabled_rules=None, disabled_rules=None,
           enabled_categories=None, disabled_categories=None,
           enabled_only=False, verbose=False,
+          pwl=None,
           **kwargs):
     """
     Check given text and return API response as a dictionary.
@@ -95,6 +103,10 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
         verbose (bool):
             If ``True``, a more verbose output will be printed. Defaults to
             ``False``.
+
+        pwl (List[str]):
+            Personal world list. A custom dictionary of words that should be
+            excluded from spell checking errors.
 
     Returns:
         dict:
@@ -157,10 +169,18 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
         post_parameters["disabledCategories"] = disabled_categories
     if enabled_only:
         post_parameters["enabledOnly"] = True
+
     r = requests.post(api_url + "check", data=post_parameters)
     if r.status_code != 200:
         raise ValueError(r.text)
     if verbose:
         print(post_parameters)
         print(r.json())
-    return r.json()
+    data = r.json()
+    if pwl:
+        matches = data.pop('matches', [])
+        data['matches'] = [
+            match for match in matches
+            if not _is_in_pwl(match, pwl)
+        ]
+    return data
