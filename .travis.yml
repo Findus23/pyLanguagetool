@@ -17,3 +17,4 @@ install:
 script:
   - python -m pytest
   - python setup.py check -ms
+  - python setup.py build_sphinx -W

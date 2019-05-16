@@ -11,6 +11,11 @@ tests:
     reports:
       junit: junit.xml
 
+
+docs:
+  stage: docs
+  script: python setup.py build_sphinx -W
+
 check:
   stage: check
   script: python setup.py check -ms
