@@ -1,30 +1,41 @@
+==============
 pyLanguagetool
-^^^^^^^^^^^^^^
+==============
 |travis| |license| |latestrelease| |pypi_versions|
 
-This is a python library and CLI for the LanguageTool_ `JSON API`_.
+A python library and CLI for the LanguageTool_ `JSON API`_.
+
+LanguageTool_ is an open source spellchecking platform. It supports a large
+variety of languages and has advanced grammar support.
 
 Installation
 ------------
-pyLanguagetool can be installed with pip:
+pyLanguagetool can be installed with pip/pipenv:
 
 .. code:: bash
 
-    $ pip install pylanguagetool
+    pip install pylanguagetool
+    # or via pipenv
+    pipenv install pylanguagetool
 
 Basic Usage
 -----------
 .. code:: bash
 
-    $ echo "This is a example" | pylanguagetool
+    # pipe text to pylanguagetool
+    echo "This is a example" | pylanguagetool
 
-    $ pylanguagetool textfile.txt
+    # read text from a file
+    pylanguagetool textfile.txt
 
-    $ pylanguagetool < textfile.txt
+    # read text from stdin
+    pylanguagetool < textfile.txt
 
-    $ pylanguagetool -c # get text from system clipboard
+    # read text from the systems clipboard
+    pylanguagetool -c # get text from system clipboard
 
-This will return a list of detected errors and possible replacements.
+All samples above will return a list of detected errors and possible
+replacements.
 
 .. code::
 
@@ -37,9 +48,10 @@ This will return a list of detected errors and possible replacements.
 
 Configuration
 -------------
-All `Languagetool API`_ parameters can be set via commandline arguments,
-environment variables or a configuration file (~/.config/pyLanguagetool.conf)
-For more information about the configuration file syntax, read the `ConfigArgParse documentation`_
+All `LanguageTool API`_ parameters can be set via command line arguments,
+environment variables or a configuration file
+(``~/.config/pyLanguagetool.conf``) For more information about the
+configuration file syntax, read the `ConfigArgParse documentation`_.
 
 Parameters
 ----------
@@ -53,7 +65,7 @@ Parameters
                           [-e ENABLED_RULES] [-d DISABLED_RULES]
                           [--enabled-categories ENABLED_CATEGORIES]
                           [--disabled-categories DISABLED_CATEGORIES]
-                          [--enabled-only]
+                          [--enabled-only] [--pwl PWL]
                           [input file]
 
     Args that start with '--' (eg. -v) can also be set in a config file
@@ -110,6 +122,13 @@ Parameters
       --enabled-only        enable only the rules and categories whose IDs are
                             specified with --enabled-rules or --enabled-categories
 
+      --pwl PWL, --personal-word-list PWL
+                            File name of personal dictionary. A private dictionary
+                            can be used to add special words that would otherwise
+                            be marked as spelling errors. [env var:
+                            PERSONAL_WORD_LIST]
+
+
 
 .. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: https://raw.githubusercontent.com/Findus23/pyLanguagetool/master/LICENSE
@@ -124,14 +143,15 @@ Parameters
 Privacy
 -------
 
-By default pyLangugagetool sends all text via HTTPS to the languagetool.org server (see their `privacy policy`_).
-You can also `setup your own server`_ and use it by changing --api-url.
+By default pyLanguagetool sends all text via HTTPS to the `LanguageTool`_
+server (see their `privacy policy`_). You can also `setup your own server`_ and
+use it by changing the ``--api-url`` attribute.
 
 .. _LanguageTool: https://languagetool.org/
 
 .. _JSON API: https://languagetool.org/http-api/swagger-ui/#/default
 
-.. _Languagetool API: https://languagetool.org/http-api/swagger-ui/#/default
+.. _LanguageTool API: https://languagetool.org/http-api/swagger-ui/#/default
 
 .. _ConfigArgParse documentation: https://github.com/bw2/ConfigArgParse#config-file-syntax
 

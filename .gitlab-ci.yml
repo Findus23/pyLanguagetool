@@ -11,6 +11,13 @@ tests:
     reports:
       junit: junit.xml
 
+
+docs:
+  stage: docs
+  script:
+    - python setup.py build_sphinx -W
+    - pylanguagetool --pwl spelling.txt --disabled-rules=WHITESPACE_RULE README.rst
+
 check:
   stage: check
   script: python setup.py check -ms
@@ -26,4 +33,5 @@ bdist:
 stages:
   - check
   - tests
+  - docs
   - build
