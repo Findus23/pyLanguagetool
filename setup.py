@@ -35,7 +35,7 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Text Processing :: Linguistic'
     ],
-    install_requires=['colorama>=0.4.1', 'configargparse>=0.14.0', 'requests>=2.21.0'],
+    install_requires=['colorama>=0.4.1', 'configargparse>=0.14.0', 'requests>=2.22.0'],
     extras_require={
         'dev': ["pytest", "docutils", "pygments"],
         'optional': ["beautifulsoup4", "markdown2", "docutils"],
