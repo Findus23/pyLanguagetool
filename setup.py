@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pyLanguagetool',
-    version='0.6.3',
+    version='0.7.0',
     packages=find_packages(),
     url='https://github.com/Findus23/pylanguagetool',
     license='MIT',
