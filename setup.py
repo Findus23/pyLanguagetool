@@ -14,7 +14,7 @@ setup(
     name='pyLanguagetool',
     version='0.7.0',
     packages=find_packages(),
-    url='https://github.com/Findus23/pylanguagetool',
+    url='https://pylanguagetool.lw1.at/',
     license='MIT',
     author='Lukas Winkler',
     author_email='python@lw1.at',
