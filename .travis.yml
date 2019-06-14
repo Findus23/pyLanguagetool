@@ -16,5 +16,5 @@ install:
 script:
   - python -m pytest
   - python setup.py check -ms
-  - python setup.py build_sphinx -W
+  - python setup.py build_sphinx -W -b dirhtml
   - pylanguagetool --pwl spelling.txt --disabled-rules=WHITESPACE_RULE README.rst

@@ -15,7 +15,7 @@ tests:
 docs:
   stage: docs
   script:
-    - python setup.py build_sphinx -W
+    - python setup.py build_sphinx -W -b dirhtml
     - pylanguagetool --pwl spelling.txt --disabled-rules=WHITESPACE_RULE README.rst
 
 check:

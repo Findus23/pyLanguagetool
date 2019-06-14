@@ -1,9 +1,26 @@
+"""
+Support spellchecking various file formats by converting them to plain text
+
+"""
 import json
 import sys
 import xml.etree.ElementTree
 
 
 def convert(source, texttype):
+    """
+    Convert files of various types to plaintext
+
+    Args:
+        texttype (str):
+            file extension of the input file
+        source (str):
+            content of the input file
+
+    Returns:
+        str:
+            plaintext output
+    """
     if texttype == "html":
         return html2text(source)
     if texttype in ["md", "markdown"]:
@@ -22,6 +39,16 @@ def convert(source, texttype):
 
 
 def html2text(html):
+    """
+    convert HTML to plaintext by parsing it with BeautifulSoup and removing code
+
+    Args:
+        html (str):
+            HTML string
+
+    Returns:
+        str: plaintext
+    """
     try:
         from bs4 import BeautifulSoup
     except ImportError:
@@ -35,6 +62,16 @@ def html2text(html):
 
 
 def markdown2html(markdown):
+    """
+    convert Markdown to HTML via ``markdown2``
+
+    Args:
+        markdown (str):
+            Markdown text
+
+    Returns:
+        str: HTML
+    """
     try:
         import markdown2
     except ImportError:
@@ -45,6 +82,16 @@ def markdown2html(markdown):
 
 
 def ipynb2markdown(ipynb):
+    """
+    Extract Markdown cells from iPython Notebook
+
+    Args:
+        ipynb (str):
+            iPython notebook JSON file
+
+    Returns:
+        str: Markdown
+    """
     j = json.loads(ipynb)
     markdown = ""
     for cell in j["cells"]:
@@ -54,6 +101,16 @@ def ipynb2markdown(ipynb):
 
 
 def rst2html(rst):
+    """
+    convert reStructuredText to HTML with ``docutils``
+
+    Args:
+        rst (str):
+             reStructuredText
+
+    Returns:
+        str: HTML
+    """
     try:
         from docutils.core import publish_string
     except ImportError:
@@ -63,6 +120,17 @@ def rst2html(rst):
 
 
 def transifexjson2txt(jsondata):
+    """
+    extract translations from Transifex JSON file
+
+    Args:
+        jsondata (str):
+            Transifex export file
+
+    Returns:
+        str: Plaintext translations
+
+    """
     data = json.loads(jsondata)
     text = ""
     for category, content in data.items():
@@ -72,6 +140,17 @@ def transifexjson2txt(jsondata):
 
 
 def xliff2txt(source):
+    """
+    extract translations from ``XLIFF`` file
+
+    Args:
+        source (str):
+            XLIFF XML string
+
+    Returns:
+        str: Plaintext translations
+
+    """
     root = xml.etree.ElementTree.fromstring(source)
     text = ""
     for file in root:
