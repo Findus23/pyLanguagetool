@@ -180,6 +180,14 @@ def main():
     input_text, inputtype = get_input_text(config)
     if not inputtype:
         inputtype = config["input_type"]
+    if inputtype == "tex":
+        print("pyLanguagetool doesn't support LaTeX out of the box.")
+        print("But it doesn't have to:")
+        print("You can simply use the output of detex")
+        if config["input file"]:
+            print("    $ detex {} | pylanguagetool".format(config["input file"]))
+        print("or use the languagetool integration in TeXstudio.")
+        sys.exit(3)
     check_text = converters.convert(input_text, inputtype)
     if config["single_line"]:
         found = False
