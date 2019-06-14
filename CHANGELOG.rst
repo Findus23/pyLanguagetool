@@ -1,7 +1,14 @@
 Changelog
 =========
 
-`0.7.0` (2019-01-19)
+`0.7.1` (2019-06-14)
+--------------------
+
+* show help when trying to spellcheck LaTeX files
+* extend documentation
+* add Matomo to https://pylanguagetool.lw1.at/
+
+`0.7.0` (2019-05-17)
 --------------------
 
 * add great documentation (`#40`_ by `@codingjoe`_)

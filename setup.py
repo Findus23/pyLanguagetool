@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pyLanguagetool',
-    version='0.7.0',
+    version='0.7.1',
     packages=find_packages(),
     url='https://pylanguagetool.lw1.at/',
     license='MIT',
