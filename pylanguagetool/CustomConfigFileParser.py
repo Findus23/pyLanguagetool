@@ -9,5 +9,3 @@ class CustomConfigFileParser(DefaultConfigFileParser):
         msg = ("Config file syntax allows: key=value, flag=true, stuff=[a,b,c] "
                "(for details, see syntax at https://pypi.org/project/ConfigArgParse/).")
         return msg
-
-    ...
