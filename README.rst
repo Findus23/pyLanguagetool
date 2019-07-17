@@ -70,10 +70,10 @@ Parameters
 
     Args that start with '--' (eg. -v) can also be set in a config file
     (~/.config/pyLanguagetool.conf). Config file syntax allows: key=value,
-    flag=true, stuff=[a,b,c] (for details, see syntax at https://goo.gl/R74nmi).
-    If an arg is specified in more than one place, then commandline values
-    override environment variables which override config file values which
-    override defaults.
+    flag=true, stuff=[a,b,c] (for details, see syntax at
+    https://pypi.org/project/ConfigArgParse/). If an arg is specified in more than
+    one place, then commandline values override environment variables which
+    override config file values which override defaults.
 
     positional arguments:
       input file            input file

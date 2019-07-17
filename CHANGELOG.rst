@@ -1,6 +1,11 @@
 Changelog
 =========
 
+`0.7.2` (unreleased)
+--------------------
+* don't use goo.gl in the help text
+
+
 `0.7.1` (2019-06-14)
 --------------------
 

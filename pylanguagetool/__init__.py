@@ -9,6 +9,7 @@ from pprint import pprint
 import configargparse
 from colorama import Fore, init as init_colors
 
+from . import CustomConfigFileParser
 from . import api
 from . import converters
 
@@ -16,7 +17,8 @@ indention = " " * 4
 
 
 def init_config():
-    p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"])
+    p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"],
+                                 config_file_parser_class=CustomConfigFileParser.CustomConfigFileParser)
     p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true')
     p.add_argument("-a", "--api-url", env_var="API_URL", default="https://languagetool.org/api/v2/",
                    help="the URL of the v2 languagetool API, should end with '/v2/'")
