@@ -1,9 +1,12 @@
 Changelog
 =========
 
-`0.7.2` (unreleased)
+`0.8.0` (2019-07-19)
 --------------------
 * don't use goo.gl in the help text
+* add new option `-r`/`--rules` to show details for matching rules
+* add new option `--rule-categories` to show categories of matching rules
+* print autodetected language
 
 
 `0.7.1` (2019-06-14)

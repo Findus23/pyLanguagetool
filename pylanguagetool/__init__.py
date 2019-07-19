@@ -31,7 +31,10 @@ def init_config():
                    choices=["txt", "html", "md", "rst", "ipynb"],
                    help="if not plaintext")
     p.add_argument('input file', help='input file', nargs='?')
-
+    p.add_argument("-r", "--rules", env_var="RULES", action='store_true', default=False,
+                   help="show the matching rules")
+    p.add_argument("--rule-categories", env_var="RULE_CATEGORIES", action='store_true', default=False,
+                   help="show the the categories of the matching rules")
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
                    help="A language code like en or en-US, or auto to guess the language automatically (see preferredVariants below). For languages with variants (English, German, Portuguese) spell checking will only be activated when you specify the variant, e.g. en-GB instead of just en."
                    )
@@ -122,13 +125,27 @@ def get_input_text(config):
         sys.exit(2)
 
 
-def print_errors(matches, api_url, version, print_color=True):
+def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False):
+    matches = response["matches"]
+    language = response["language"]
+    version = response["software"]["name"] + " " + response["software"]["version"]
+
     def colored(text, color):
         if print_color:
             init_colors()
             return color + text + Fore.RESET
         else:
             return text
+
+    print(colored(
+        "{} detected ({:.0f}% confidence)".format(language["detectedLanguage"]["name"],
+                                                  language["detectedLanguage"]["confidence"] * 100)
+        , Fore.LIGHTBLACK_EX))
+    if language["detectedLanguage"]["code"] != language["code"]:
+        print(colored(
+            "checking as {} text because of setting".format(language["name"])
+            , Fore.LIGHTBLACK_EX))
+    print()
 
     tick = colored(u"\u2713", Fore.LIGHTGREEN_EX) + " "
     cross = colored(u"\u2717", Fore.LIGHTRED_EX) + " "
@@ -165,6 +182,16 @@ def print_errors(matches, api_url, version, print_color=True):
                     colored(replacement["value"], Fore.LIGHTGREEN_EX) +
                     colored(context[endpostion:], Fore.LIGHTBLACK_EX)
                 )
+        rule = error["rule"]
+        if rules:
+            print(
+                indention[:2] + colored(rule["id"] + ": ", Fore.LIGHTBLACK_EX) + rule["description"]
+            )
+        if rule_categories:
+            category = rule["category"]
+            print(
+                indention[:2] + colored(category["id"] + ": ", Fore.LIGHTBLACK_EX) + category["name"]
+            )
         print()
     print(colored("Text checked by {url} ({version})".format(url=api_url, version=version), Fore.LIGHTBLACK_EX))
 
@@ -195,10 +222,11 @@ def main():
         found = False
         for line in check_text.splitlines():
             response = api.check(line, **config)
-            print_errors(response["matches"],
+            print_errors(response,
                          config["api_url"],
-                         response["software"]["name"] + " " + response["software"]["version"],
-                         not config["no_color"]
+                         not config["no_color"],
+                         config["rules"],
+                         config["rule_categories"]
                          )
             if len(response["matches"]) > 0:
                 found = True
@@ -207,10 +235,11 @@ def main():
 
     else:
         response = api.check(check_text, **config)
-        print_errors(response["matches"],
+        print_errors(response,
                      config["api_url"],
-                     response["software"]["name"] + " " + response["software"]["version"],
-                     not config["no_color"]
+                     not config["no_color"],
+                     config["rules"],
+                     config["rule_categories"]
                      )
 
         if len(response["matches"]) > 0:
