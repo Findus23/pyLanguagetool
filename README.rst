@@ -8,6 +8,10 @@ A python library and CLI for the LanguageTool_ `JSON API`_.
 LanguageTool_ is an open source spellchecking platform. It supports a large
 variety of languages and has advanced grammar support.
 
+.. image:: https://pylanguagetool.lw1.at/_images/screenshot.png
+
+.. start-of-homepage-text
+
 Installation
 ------------
 pyLanguagetool can be installed with pip/pipenv:
@@ -89,6 +93,9 @@ Parameters
       -s, --single-line     check every line on its own [env var: SINGLE_LINE]
       -t {txt,html,md,rst,ipynb}, --input-type {txt,html,md,rst,ipynb}
                             if not plaintext [env var: CLIPBOARD]
+      -r, --rules           show the matching rules [env var: RULES]
+      --rule-categories     show the the categories of the matching rules [env
+                            var: RULE_CATEGORIES]
       -l LANG, --lang LANG  A language code like en or en-US, or auto to guess the
                             language automatically (see preferredVariants below).
                             For languages with variants (English, German,
