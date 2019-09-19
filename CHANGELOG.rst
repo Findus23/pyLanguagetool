@@ -2,7 +2,7 @@ Changelog
 =========
 
 `0.8.1` (2019-09-19)
--------------
+--------------------
 * fix supported file formats when manually specifying `--input-type`
 
 
