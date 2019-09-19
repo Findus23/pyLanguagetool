@@ -28,7 +28,7 @@ def init_config():
     p.add_argument("-s", "--single-line", env_var="SINGLE_LINE", action='store_true', default=False,
                    help="check every line on its own")
     p.add_argument("-t", "--input-type", env_var="CLIPBOARD", default="txt",
-                   choices=["txt", "html", "md", "rst", "ipynb"],
+                   choices=converters.supported_extensions,
                    help="if not plaintext")
     p.add_argument('input file', help='input file', nargs='?')
     p.add_argument("-r", "--rules", env_var="RULES", action='store_true', default=False,

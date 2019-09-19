@@ -1,6 +1,11 @@
 Changelog
 =========
 
+`0.8.1` (???)
+-------------
+* fix supported file formats when manually specifying `--input-type`
+
+
 `0.8.0` (2019-07-19)
 --------------------
 * don't use goo.gl in the help text

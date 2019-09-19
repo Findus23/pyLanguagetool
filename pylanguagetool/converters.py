@@ -6,6 +6,8 @@ import json
 import sys
 import xml.etree.ElementTree
 
+supported_extensions = ["txt", "html", "md", "markdown", "rst", "ipynb", "json", "xliff"]
+
 
 def convert(source, texttype):
     """
