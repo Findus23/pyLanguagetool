@@ -1,6 +1,11 @@
 Changelog
 =========
 
+`0.8.2` (2019-09-19)
+--------------------
+* output version with `-V`/`--version`
+* better message when running without input
+
 `0.8.1` (2019-09-19)
 --------------------
 * fix supported file formats when manually specifying `--input-type`
