@@ -12,6 +12,8 @@ variety of languages and has advanced grammar support.
 
 .. start-of-homepage-text
 
+**Warning:** The first release in 2020 will drop Python 2 support.
+
 Installation
 ------------
 pyLanguagetool can be installed with pip/pipenv:
