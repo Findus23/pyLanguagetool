@@ -15,7 +15,6 @@ docutils-stubs==0.0.21
 future==0.17.1
 idna==2.8
 importlib-metadata==0.18
-LinkChecker==9.4.0
 markdown2==2.3.8
 more-itertools==4.3.0
 packaging==19.2
