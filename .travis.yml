@@ -1,12 +1,11 @@
 language: python
-dist: bionic
+dist: xenial
 python:
   - "2.7"
   - "3.5"
   - "3.6"
   - "3.7"
-  - "pypy3.6"
-  - "pypy3.7"
+  - "pypy3.5-7.0"
 # command to install dependencies
 install:
   - pip install -e .[dev]
