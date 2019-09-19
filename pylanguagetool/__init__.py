@@ -7,6 +7,7 @@ import sys
 from pprint import pprint
 
 import configargparse
+import pkg_resources
 from colorama import Fore, init as init_colors
 
 from . import CustomConfigFileParser
@@ -19,6 +20,7 @@ indention = " " * 4
 def init_config():
     p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"],
                                  config_file_parser_class=CustomConfigFileParser.CustomConfigFileParser)
+    p.add_argument("-V", "--version", default=False, action='store_true')
     p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true')
     p.add_argument("-a", "--api-url", env_var="API_URL", default="https://languagetool.org/api/v2/",
                    help="the URL of the v2 languagetool API, should end with '/v2/'")
@@ -63,6 +65,9 @@ def init_config():
         ))
 
     c = vars(p.parse_args())
+    if c["version"]:
+        print(pkg_resources.get_distribution('pylanguagetool').version)
+        exit()
     if c["enabled_only"] and (c["disabled_categories"] or c["disabled_rules"]):
         print("disabled not allowed")  # TODO: ?
     if c["preferred_variants"] and c["lang"] != "auto":
@@ -72,7 +77,7 @@ def init_config():
         c["preferred_variants"] = None
     if c["verbose"]:
         pprint(c)
-    return c
+    return c, p
 
 
 def get_clipboard():
@@ -121,8 +126,7 @@ def get_input_text(config):
             except UnicodeDecodeError:
                 print("can't read text")
                 sys.exit(1)
-        print("input file required")
-        sys.exit(2)
+        return None, None
 
 
 def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False):
@@ -197,7 +201,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
 
 
 def main():
-    config = init_config()
+    config, argparser = init_config()
 
     if config["verbose"]:
         print(sys.version)
@@ -207,6 +211,10 @@ def main():
             config['pwl'] = [w.strip() for w in fs.readlines()]
 
     input_text, inputtype = get_input_text(config)
+    if not input_text:
+        argparser.print_usage()
+        print("input file is required")
+        sys.exit(2)
     if not inputtype:
         inputtype = config["input_type"]
     if inputtype == "tex":
