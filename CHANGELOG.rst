@@ -1,6 +1,11 @@
 Changelog
 =========
 
+`0.8.3` (2019-09-20)
+--------------------
+* allow overriding file extension
+* improve XLIFF handling
+
 `0.8.2` (2019-09-19)
 --------------------
 * output version with `-V`/`--version`
