@@ -29,7 +29,7 @@ def init_config():
                    help="get text from system clipboard")
     p.add_argument("-s", "--single-line", env_var="SINGLE_LINE", action='store_true', default=False,
                    help="check every line on its own")
-    p.add_argument("-t", "--input-type", env_var="INPUT_TYPE", default="txt",
+    p.add_argument("-t", "--input-type", env_var="INPUT_TYPE",
                    choices=converters.supported_extensions,
                    help="if not plaintext")
     p.add_argument('input file', help='input file', nargs='?')
@@ -226,6 +226,7 @@ def main():
         print("or use the languagetool integration in TeXstudio.")
         sys.exit(3)
     check_text = converters.convert(input_text, inputtype)
+    print(check_text)
     if config["single_line"]:
         found = False
         for line in check_text.splitlines():
