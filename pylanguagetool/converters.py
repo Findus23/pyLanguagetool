@@ -158,8 +158,9 @@ def xliff2txt(source):
     for file in root:
         for body in file:
             for trans_unit in body:
-                value = trans_unit[0].text
-                text += value + "\n\n"
+                value = trans_unit.find("{urn:oasis:names:tc:xliff:document:1.1}target").text
+                if value:
+                    text += value + "\n\n"
     return text
 
 
