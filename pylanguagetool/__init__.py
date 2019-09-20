@@ -215,7 +215,7 @@ def main():
         argparser.print_usage()
         print("input file is required")
         sys.exit(2)
-    if not inputtype:
+    if config["input_type"]:
         inputtype = config["input_type"]
     if inputtype == "tex":
         print("pyLanguagetool doesn't support LaTeX out of the box.")
