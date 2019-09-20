@@ -152,7 +152,7 @@ Parameters
 Privacy
 -------
 
-By default pyLanguagetool sends all text via HTTPS to the `LanguageTool`_
+By default, pyLanguagetool sends all text via HTTPS to the `LanguageTool`_
 server (see their `privacy policy`_). You can also `setup your own server`_ and
 use it by changing the ``--api-url`` attribute.
 
