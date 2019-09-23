@@ -116,39 +116,52 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
 
             E.g.::
 
-                {'language': {'code': 'en-US',
-                              'detectedLanguage': {'code': 'en-US',
-                                                   'confidence': 0.561,
-                                                   'name': 'English (US)'},
-                              'name': 'English (US)'},
-                 'matches': [{'context': {'length': 1,
-                                          'offset': 8,
-                                          'text': 'This is a example'},
-                              'contextForSureMatch': 1,
-                              'ignoreForIncompleteSentence': False,
-                              'length': 1,
-                              'message': 'Use "an" instead of \'a\' if the following word '
-                                         "starts with a vowel sound, e.g. 'an article', 'an "
-                                         "hour'",
-                              'offset': 8,
-                              'replacements': [{'value': 'an'}],
-                              'rule': {'category': {'id': 'MISC', 'name': 'Miscellaneous'},
-                                       'description': "Use of 'a' vs. 'an'",
-                                       'id': 'EN_A_VS_AN',
-                                       'issueType': 'misspelling'},
-                              'sentence': 'This is a example',
-                              'shortMessage': 'Wrong article',
-                              'type': {'typeName': 'Other'}}],
-                 'software': {'apiVersion': 1,
-                              'buildDate': '2019-05-15 19:25',
-                              'name': 'LanguageTool',
-                              'premium': False,
-                              'premiumHint': 'You might be missing errors only the Premium '
-                                             'version can find. Contact us at '
-                                             'support<at>languagetoolplus.com.',
-                              'status': '',
-                              'version': '4.6-SNAPSHOT'},
-                 'warnings': {'incompleteResults': False}}
+                {
+                    "language": {
+                        "code": "en-US",
+                        "detectedLanguage": {
+                            "code": "en-US",
+                            "confidence": 0.561,
+                            "name": "English (US)",
+                        },
+                        "name": "English (US)",
+                    },
+                    "matches": [
+                        {
+                            "context": {"length": 1, "offset": 8, "text": "This is a example"},
+                            "contextForSureMatch": 1,
+                            "ignoreForIncompleteSentence": False,
+                            "length": 1,
+                            "message": "Use \"an\" instead of 'a' if the following word "
+                            "starts with a vowel sound, e.g. 'an article', 'an "
+                            "hour'",
+                            "offset": 8,
+                            "replacements": [{"value": "an"}],
+                            "rule": {
+                                "category": {"id": "MISC", "name": "Miscellaneous"},
+                                "description": "Use of 'a' vs. 'an'",
+                                "id": "EN_A_VS_AN",
+                                "issueType": "misspelling",
+                            },
+                            "sentence": "This is a example",
+                            "shortMessage": "Wrong article",
+                            "type": {"typeName": "Other"},
+                        }
+                    ],
+                    "software": {
+                        "apiVersion": 1,
+                        "buildDate": "2019-05-15 19:25",
+                        "name": "LanguageTool",
+                        "premium": False,
+                        "premiumHint": "You might be missing errors only the Premium "
+                        "version can find. Contact us at "
+                        "support<at>languagetoolplus.com.",
+                        "status": "",
+                        "version": "4.6-SNAPSHOT",
+                    },
+                    "warnings": {"incompleteResults": False},
+                }
+
 
     """
     post_parameters = {
