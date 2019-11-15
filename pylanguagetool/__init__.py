@@ -241,7 +241,6 @@ def main():
         print("or use the languagetool integration in TeXstudio.")
         sys.exit(3)
     check_text = converters.convert(input_text, inputtype)
-    print(check_text)
     if config["single_line"]:
         found = False
         for line in check_text.splitlines():
