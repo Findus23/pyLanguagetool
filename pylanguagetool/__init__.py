@@ -32,6 +32,8 @@ def init_config():
     p.add_argument("-t", "--input-type", env_var="INPUT_TYPE",
                    choices=converters.supported_extensions,
                    help="if not plaintext")
+    p.add_argument("-u", "--explain-rule", env_var="EXPLAIN_RULE", action="store_true", default=False,
+                   help="print URLs with more information about rules")
     p.add_argument('input file', help='input file', nargs='?')
     p.add_argument("-r", "--rules", env_var="RULES", action='store_true', default=False,
                    help="show the matching rules")
@@ -129,7 +131,7 @@ def get_input_text(config):
         return None, None
 
 
-def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False):
+def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False):
     matches = response["matches"]
     language = response["language"]
     version = response["software"]["name"] + " " + response["software"]["version"]
@@ -153,6 +155,8 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
 
     tick = colored(u"\u2713", Fore.LIGHTGREEN_EX) + " "
     cross = colored(u"\u2717", Fore.LIGHTRED_EX) + " "
+
+    rule_explanations = []
 
     for error in matches:
         context_object = error["context"]
@@ -196,7 +200,18 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
             print(
                 indention[:2] + colored(category["id"] + ": ", Fore.LIGHTBLACK_EX) + category["name"]
             )
+        if explain_rule:
+            rule = error["rule"]
+            if "description" in rule and "urls" in rule and len(rule["urls"]) > 0:
+                rule_explanations.append((rule["description"], rule["urls"][0]["value"]))
         print()
+
+    if explain_rule:
+        col_len = max(len(d) for d,u in rule_explanations) + 1
+        for descr, url in rule_explanations:
+            print(descr + ":" + " " * (col_len - len(descr)) + url)
+        print()
+
     print(colored("Text checked by {url} ({version})".format(url=api_url, version=version), Fore.LIGHTBLACK_EX))
 
 
@@ -248,7 +263,8 @@ def main():
                      config["api_url"],
                      not config["no_color"],
                      config["rules"],
-                     config["rule_categories"]
+                     config["rule_categories"],
+                     config["explain_rule"]
                      )
 
         if len(response["matches"]) > 0:
