@@ -1,6 +1,12 @@
 Changelog
 =========
 
+`0.8.4` (2019-11-15)
+--------------------
+* support Python 3.8
+* remove leftover `print()`
+* add new option `--explain-rule` that prints URLs with more information about affected rules
+
 `0.8.3` (2019-09-20)
 --------------------
 * allow overriding file extension
