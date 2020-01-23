@@ -151,7 +151,7 @@ Privacy
 -------
 
 By default, pyLanguagetool sends all text via HTTPS to the `LanguageTool`_
-server (see their `privacy policy`_). You can also `setup your own server`_ and
+server (see their `privacy policy`_). You can also `set up your own server`_ and
 use it by changing the ``--api-url`` attribute.
 
 .. _LanguageTool: https://languagetool.org/
@@ -164,4 +164,4 @@ use it by changing the ``--api-url`` attribute.
 
 .. _privacy policy: https://languagetool.org/privacy/
 
-.. _setup your own server: http://wiki.languagetool.org/http-server
+.. _set up your own server: http://wiki.languagetool.org/http-server
