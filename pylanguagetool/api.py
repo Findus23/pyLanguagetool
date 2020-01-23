@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 r"""
 Python API wrapper for the languagetool REST API.
 

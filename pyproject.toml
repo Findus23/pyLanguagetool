@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "pylanguagetool"
+version = "0.9.0"
+description = "A python library and CLI for the LanguageTool JSON API"
+authors = ["Lukas Winkler <git@lw1.at>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.5,<3.9"
+colorama = ">=0.4.1"
+configargparse = ">=0.14.0"
+requests = ">=2.22.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.3.4"
+docutils = "^0.16"
+markdown2 = "^2.3.8"
+beautifulsoup4 = "^4.8.2"
+sphinx = "^2.3.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

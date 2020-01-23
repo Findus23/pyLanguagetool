@@ -1,6 +1,12 @@
 Changelog
 =========
 
+`0.9.0` (2020-01-23)
+--------------------
+* drop support for Python 2
+* improve XLIFF handling
+
+
 `0.8.4` (2019-11-15)
 --------------------
 * support Python 3.8

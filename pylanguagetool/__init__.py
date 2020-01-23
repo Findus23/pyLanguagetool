@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-"""A python library and CLI tool for the LanguageTool JSON API."""
-from __future__ import print_function
-
+"""
+A python library and CLI tool for the LanguageTool JSON API.
+"""
 import os
 import sys
 from pprint import pprint
@@ -91,10 +90,7 @@ def get_clipboard():
 
     """
     # See also: http://stackoverflow.com/a/16189232
-    try:
-        import Tkinter as tk  # Python2
-    except ImportError:
-        import tkinter as tk  # Python3
+    import tkinter as tk
 
     root = tk.Tk()
     root.withdraw()  # keep the window from showing

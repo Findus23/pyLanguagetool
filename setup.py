@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pyLanguagetool',
-    version='0.8.4',
+    version='0.9.0',
     packages=find_packages(),
     url='https://pylanguagetool.lw1.at/',
     license='MIT',
@@ -24,8 +24,6 @@ setup(
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
         'Environment :: Console',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -37,7 +35,7 @@ setup(
     ],
     install_requires=['colorama>=0.4.1', 'configargparse>=0.14.0', 'requests>=2.22.0'],
     extras_require={
-        'dev': ["pytest", "docutils", "pygments"],
+        'dev': ["pytest"],
         'optional': ["beautifulsoup4", "markdown2", "docutils"],
     },
     keywords="languagetool spell grammar checker",
