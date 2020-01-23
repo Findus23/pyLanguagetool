@@ -7,9 +7,10 @@ python:
   - "3.8"
   - "pypy3.5-7.0"
 # command to install dependencies
+before_install:
+  - pip install poetry
 install:
-  - pip install -e .[dev]
-  - pip install -e .[optional]
+  - poetry install
 # command to run tests
 script:
   - python -m pytest
