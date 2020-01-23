@@ -17,10 +17,10 @@ environment:
 install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
-  - "%PYTHON%\\python.exe -m pip install .[dev]"
-  - "%PYTHON%\\python.exe -m pip install .[optional]"
+  - "%PYTHON%\\python.exe -m pip install poetry"
+  - "%PYTHON%\\python.exe -m poetry install"
 
-build: off
+build: false
 
 test_script:
   # Put your test command here.

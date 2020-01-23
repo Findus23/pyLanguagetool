@@ -1,8 +1,8 @@
 image: python:3.8
 
 before_script:
-  - pip install -e .[dev]
-  - pip install -e .[optional]
+  - pip install poetry
+  - poetry install
 
 tests:
   stage: tests
