@@ -180,7 +180,7 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
     if disabled_categories:
         post_parameters["disabledCategories"] = disabled_categories
     if enabled_only:
-        post_parameters["enabledOnly"] = True
+        post_parameters["enabledOnly"] = 'true'
 
     r = requests.post(api_url + "check", data=post_parameters)
     if r.status_code != 200:
