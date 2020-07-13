@@ -32,6 +32,7 @@ latex_elements = {
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
+    "requests": ("https://2.python-requests.org/en/master/", None),
 }
 
 
