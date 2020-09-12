@@ -41,6 +41,7 @@ def init_config():
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
                    help="A language code like en or en-US, or auto to guess the language automatically (see preferredVariants below). For languages with variants (English, German, Portuguese) spell checking will only be activated when you specify the variant, e.g. en-GB instead of just en."
                    )
+    p.add_argument("--lines", env_var="LINES", action="store_true", help="show line numbers of found mistakes")
     p.add_argument("-m", "--mother-tongue", env_var="MOTHER__TONGUE",
                    help="A language code of the user's native language, enabling false friends checks for some language pairs."
                    )
@@ -127,7 +128,52 @@ def get_input_text(config):
         return None, None
 
 
-def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False):
+def fuzzy_substring(needle, haystack):
+    """Calculates the fuzzy match of needle in haystack,
+    using a modified version of the Levenshtein distance
+    algorithm.
+    The function is modified from the levenshtein function
+    in the bktree module by Adam Hupp.
+
+    Taken and modified from:
+    http://ginstrom.com/scribbles/2007/12/01/fuzzy-substring-matching-with-levenshtein-distance-in-python/
+
+    Returns:
+        index of first most likely match (first match with minimal edit
+        distance)
+    """
+    m, n = len(needle), len(haystack)
+
+    # base cases
+    if m == 1:
+        return not needle in haystack
+    if not n:
+        return m
+
+    row1 = [0] * (n+1)
+    for i in range(0,m):
+        row2 = [i+1]
+        for j in range(0,n):
+            cost = ( needle[i] != haystack[j] )
+
+            row2.append( min(row1[j+1]+1, # deletion
+                               row2[j]+1, #insertion
+                               row1[j]+cost) #substitution
+                           )
+        # we don't need the original row1 in the future.
+        # In the end, we only want the last row.
+        row1 = row2
+
+    # the index of the lowest number in this row will tell us the location of
+    # the best match.
+    return row1.index(min(row1)), min(row1)
+
+
+def line_from_offset(offset: int, text: str) -> int:
+    return len(text[:offset].split('\n'))
+
+
+def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False, original=''):
     matches = response["matches"]
     language = response["language"]
     version = response["software"]["name"] + " " + response["software"]["version"]
@@ -161,6 +207,29 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
         offset = context_object["offset"]
 
         endposition = offset + length
+
+        # dict_items([('message', 'Possible spelling mistake. ‘Favourite’ is
+        # British English.'), ('shortMessage', ''), ('replacements', [{'value':
+        # 'Favorite', 'shortDescription': 'English (US)'}]), ('offset', 551),
+        # ('length', 9), ('context', {'text': '...m would I recommend reading
+        # this book?  Favourite Quotes  ', 'offset': 43, 'length': 9}),
+        # ('sentence', 'Favourite Quotes'), ('type', {'typeName': 'Other'}),
+        # ('rule', {'id': 'MORFOLOGIK_RULE_EN_US', 'description': 'Possible
+        # spelling mistake', 'issueType': 'misspelling', 'category': {'id':
+        # 'TYPOS', 'name': 'Possible Typo'}}), ('ignoreForIncompleteSentence',
+        # False), ('contextForSureMatch', 0)])
+        # print(error.items())
+        # print(offset + error["offset"])
+        # print(fuzzy_substring(context, original))
+        total_offset = offset + error["offset"]
+        line_html = line_from_offset(total_offset, original)
+        offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:])
+        line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
+
+        print("Score %.02f around line %i" % (1 - m / len(context), line_fuzz))
+        # print("Matching: \"" + context[3:-3] + "\" with score " + str(m))
+        # print("Match: \"" + original[(offset_fuzz - len(context)):(offset_fuzz)] + "\"")
+
         print(error["message"])
 
         print(
@@ -259,7 +328,8 @@ def main():
                      not config["no_color"],
                      config["rules"],
                      config["rule_categories"],
-                     config["explain_rule"]
+                     config["explain_rule"],
+                     input_text
                      )
 
         if len(response["matches"]) > 0:
