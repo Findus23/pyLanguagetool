@@ -160,15 +160,15 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
         length = context_object["length"]
         offset = context_object["offset"]
 
-        endpostion = offset + length
+        endposition = offset + length
         print(error["message"])
 
         print(
             indention[:2] +
             cross +
             colored(context[:offset], Fore.LIGHTBLACK_EX) +
-            colored(context[offset:endpostion], Fore.LIGHTRED_EX) +
-            colored(context[endpostion:], Fore.LIGHTBLACK_EX)
+            colored(context[offset:endposition], Fore.LIGHTRED_EX) +
+            colored(context[endposition:], Fore.LIGHTBLACK_EX)
         )
         print(
             indention +
@@ -184,7 +184,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
                     tick +
                     colored(context[:offset], Fore.LIGHTBLACK_EX) +
                     colored(replacement["value"], Fore.LIGHTGREEN_EX) +
-                    colored(context[endpostion:], Fore.LIGHTBLACK_EX)
+                    colored(context[endposition:], Fore.LIGHTBLACK_EX)
                 )
         rule = error["rule"]
         if rules:
