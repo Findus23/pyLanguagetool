@@ -210,8 +210,11 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
 
         if original and lines:
             total_offset = offset + error["offset"]
+            # calculates the lower offset bound based on the html converted
             line_html = line_from_offset(total_offset, original)
-            offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:])
+            max_offset = int((error["offset"] + len(context)) * 1.3)
+            # get the expected offset based on fuzzy matching with a highly likely
+            offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:max_offset])
             line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
             # print("line: %i, fuzz: %i, offset: %i, error: %i" % (line_fuzz, offset_fuzz, offset, error["offset"]))
 
