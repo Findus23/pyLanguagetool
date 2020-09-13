@@ -166,7 +166,7 @@ def fuzzy_substring(needle, haystack):
 
     # the index of the lowest number in this row will tell us the location of
     # the best match.
-    return row1.index(min(row1)), min(row1)
+    return row1.index(min(row1)) - len(needle), min(row1)
 
 
 def line_from_offset(offset: int, text: str) -> int:
