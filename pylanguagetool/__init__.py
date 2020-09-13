@@ -41,7 +41,7 @@ def init_config():
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
                    help="A language code like en or en-US, or auto to guess the language automatically (see preferredVariants below). For languages with variants (English, German, Portuguese) spell checking will only be activated when you specify the variant, e.g. en-GB instead of just en."
                    )
-    p.add_argument("--lines", env_var="LINES", action="store_true", help="show line numbers of found mistakes")
+    p.add_argument("--lines", env_var="LINES", action="store_true", help="show approximate line numbers of found mistakes. Noticably slow for large files")
     p.add_argument("-m", "--mother-tongue", env_var="MOTHER__TONGUE",
                    help="A language code of the user's native language, enabling false friends checks for some language pairs."
                    )
