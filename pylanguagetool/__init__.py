@@ -208,27 +208,14 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
 
         endposition = offset + length
 
-        # dict_items([('message', 'Possible spelling mistake. ‘Favourite’ is
-        # British English.'), ('shortMessage', ''), ('replacements', [{'value':
-        # 'Favorite', 'shortDescription': 'English (US)'}]), ('offset', 551),
-        # ('length', 9), ('context', {'text': '...m would I recommend reading
-        # this book?  Favourite Quotes  ', 'offset': 43, 'length': 9}),
-        # ('sentence', 'Favourite Quotes'), ('type', {'typeName': 'Other'}),
-        # ('rule', {'id': 'MORFOLOGIK_RULE_EN_US', 'description': 'Possible
-        # spelling mistake', 'issueType': 'misspelling', 'category': {'id':
-        # 'TYPOS', 'name': 'Possible Typo'}}), ('ignoreForIncompleteSentence',
-        # False), ('contextForSureMatch', 0)])
-        # print(error.items())
-        # print(offset + error["offset"])
-        # print(fuzzy_substring(context, original))
-        total_offset = offset + error["offset"]
-        line_html = line_from_offset(total_offset, original)
-        offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:])
-        line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
+        if original:
+            total_offset = offset + error["offset"]
+            line_html = line_from_offset(total_offset, original)
+            offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:])
+            line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
+            # print("line: %i, fuzz: %i, offset: %i, error: %i" % (line_fuzz, offset_fuzz, offset, error["offset"]))
 
-        print("Score %.02f around line %i" % (1 - m / len(context), line_fuzz))
-        # print("Matching: \"" + context[3:-3] + "\" with score " + str(m))
-        # print("Match: \"" + original[(offset_fuzz - len(context)):(offset_fuzz)] + "\"")
+            print("Score of [%.02f] around line [%i]" % (1 - m / len(context), line_fuzz))
 
         print(error["message"])
 
