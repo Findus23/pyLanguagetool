@@ -173,7 +173,7 @@ def line_from_offset(offset: int, text: str) -> int:
     return len(text[:offset].split('\n'))
 
 
-def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False, original=''):
+def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False, lines=False, original=''):
     matches = response["matches"]
     language = response["language"]
     version = response["software"]["name"] + " " + response["software"]["version"]
@@ -208,7 +208,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
 
         endposition = offset + length
 
-        if original:
+        if original and lines:
             total_offset = offset + error["offset"]
             line_html = line_from_offset(total_offset, original)
             offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:])
@@ -316,6 +316,7 @@ def main():
                      config["rules"],
                      config["rule_categories"],
                      config["explain_rule"],
+                     config["lines"],
                      input_text
                      )
 
