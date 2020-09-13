@@ -208,17 +208,32 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
 
         endposition = offset + length
 
+        # if we have an original text and want to search for approximate line
+        # numbers
         if original and lines:
-            total_offset = offset + error["offset"]
-            # calculates the lower offset bound based on the html converted
-            line_html = line_from_offset(total_offset, original)
-            max_offset = int((error["offset"] + len(context)) * 1.3)
-            # get the expected offset based on fuzzy matching with a highly likely
-            offset_fuzz, m = fuzzy_substring(context[3:-3], original[error["offset"]:max_offset])
-            line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
-            # print("line: %i, fuzz: %i, offset: %i, error: %i" % (line_fuzz, offset_fuzz, offset, error["offset"]))
+            # we need/want to overshoot to absolutely include the
+            # 'context'-snippet, but it's unclear by how much. Minimal
+            # overshoot reduces fuzzy matching speed
+            MAGIC_FACTOR = 1.1
 
-            print("Score of [%.02f] around line [%i]" % (1 - m / len(context), line_fuzz))
+            # roughly estimate overshoot-offset. Not calculating it would mean
+            # considering the rest of the file, which is likely to be far
+            # bigger. Grows until about the last third of the file, and is
+            # limited by the end of the file after hitting the maximum
+            max_offset = int((error["offset"] + len(context)) * MAGIC_FACTOR)
+
+            # search for the closest match of the context string within a
+            # heuristically shortened part of the unmodified text
+            offset_fuzz, m = fuzzy_substring(context[3:-3],
+                    original[error["offset"]:max_offset])
+
+            # from the offset, calculate the approximate location line number
+            line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
+
+            # Note that this will always print an approximate line number, even
+            # if it is completely wrong. However, the score should be
+            # increadibly low for unlikely matches.
+            print("Score of [%.02f] around line %i" % (1 - m / len(context), line_fuzz))
 
         print(error["message"])
 
