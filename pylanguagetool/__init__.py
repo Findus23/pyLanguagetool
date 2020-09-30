@@ -42,6 +42,7 @@ def init_config():
                    help="A language code like en or en-US, or auto to guess the language automatically (see preferredVariants below). For languages with variants (English, German, Portuguese) spell checking will only be activated when you specify the variant, e.g. en-GB instead of just en."
                    )
     p.add_argument("--lines", env_var="LINES", action="store_true", help="show approximate line numbers of found mistakes. Noticably slow for large files")
+    p.add_argument("--only-sound", env_var="SOUND", action="store_true", help="Do not use heuristics to reduce line number search space. Noticably slower but only way to get accurate line numbers for files with many comments.")
     p.add_argument("-m", "--mother-tongue", env_var="MOTHER__TONGUE",
                    help="A language code of the user's native language, enabling false friends checks for some language pairs."
                    )
@@ -173,7 +174,7 @@ def line_from_offset(offset: int, text: str) -> int:
     return len(text[:offset].split('\n'))
 
 
-def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False, lines=False, original=''):
+def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False, lines=False, sound=False, original=''):
     matches = response["matches"]
     language = response["language"]
     version = response["software"]["name"] + " " + response["software"]["version"]
@@ -199,6 +200,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
     cross = colored(u"\u2717", Fore.LIGHTRED_EX) + " "
 
     rule_explanations = []
+    last_match = 0
 
     for error in matches:
         context_object = error["context"]
@@ -211,21 +213,34 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
         # if we have an original text and want to search for approximate line
         # numbers
         if original and lines:
-            # we need/want to overshoot to absolutely include the
-            # 'context'-snippet, but it's unclear by how much. Minimal
-            # overshoot reduces fuzzy matching speed
-            MAGIC_FACTOR = 1.1
+            if sound:
+                # only use the minimal sound guesses we can make.
+                # makes calculation expensive, but necessary when there are
+                # large sections commented out
+                min_sound = max(last_match - len(context), 0)
+                offset_fuzz, m = fuzzy_substring(context[3:-3],
+                        original[min_sound:])
 
-            # roughly estimate overshoot-offset. Not calculating it would mean
-            # considering the rest of the file, which is likely to be far
-            # bigger. Grows until about the last third of the file, and is
-            # limited by the end of the file after hitting the maximum
-            max_offset = int((error["offset"] + len(context)) * MAGIC_FACTOR)
+                # the next error will have a higher offset than this one. Start
+                # searching here next time.
+                last_match = offset_fuzz
+            else:
+                # heuristically approximate our search space. Works fine for
+                # most markdown files.
 
-            # search for the closest match of the context string within a
-            # heuristically shortened part of the unmodified text
-            offset_fuzz, m = fuzzy_substring(context[3:-3],
-                    original[error["offset"]:max_offset])
+                # we need/want to overshoot to absolutely include the
+                # 'context'-snippet, but it's unclear by how much. Lower
+                # overshoot increases fuzzy matching speed
+                MAGIC_FACTOR = 1.1
+
+                # roughly estimate overshoot-offset. Not calculating it would mean
+                # considering the rest of the file, which is likely to be far
+                # bigger. Grows until about the last third of the file, and is
+                # limited by the end of the file after hitting the maximum
+                max_offset = int((error["offset"] + len(context)) * MAGIC_FACTOR)
+
+                offset_fuzz, m = fuzzy_substring(context[3:-3],
+                        original[error["offset"]:max_offset])
 
             # from the offset, calculate the approximate location line number
             line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
@@ -335,7 +350,8 @@ def main():
                      config["rule_categories"],
                      config["explain_rule"],
                      config["lines"],
-                     input_text
+                     input_text,
+                     config["sound"]
                      )
 
         if len(response["matches"]) > 0:
