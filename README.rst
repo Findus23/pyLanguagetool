@@ -164,4 +164,4 @@ use it by changing the ``--api-url`` attribute.
 
 .. _privacy policy: https://languagetool.org/privacy/
 
-.. _set up your own server: http://wiki.languagetool.org/http-server
+.. _set up your own server: https://dev.languagetool.org/http-server
