@@ -350,8 +350,8 @@ def main():
                      config["rule_categories"],
                      config["explain_rule"],
                      config["lines"],
-                     input_text,
-                     config["sound"]
+                     config["only_sound"],
+                     input_text
                      )
 
         if len(response["matches"]) > 0:
