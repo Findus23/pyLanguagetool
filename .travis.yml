@@ -9,9 +9,9 @@ python:
 # command to install dependencies
 before_install:
   - pip install poetry
-  - pip install markdown2
-  - pip install beautifulsoup4
-  - poetry install
+  - poetry install --no-dev
+  - poetry install --no-root
+# install and link python package
 install:
   - pip install -e .
 # command to run tests
