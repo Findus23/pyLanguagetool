@@ -1,6 +1,17 @@
 Changelog
 =========
 
+`0.9.1` (2020-10-01)
+--------------------
+* fixed value of POST parameter enabledOnly (`#42`_ by `@matze-dd`_)
+* fix link for self-hosting Languagetool (`#44`_ by `@fkarg`_)
+
+
+.. _#42: https://github.com/Findus23/pyLanguagetool/pull/42
+.. _@matze-dd: https://github.com/matze-dd
+.. _#44: https://github.com/Findus23/pyLanguagetool/pull/44
+.. _@fkarg: https://github.com/fkarg
+
 `0.9.0` (2020-01-23)
 --------------------
 * drop support for Python 2
@@ -53,7 +64,7 @@ Changelog
 * drop support for Python 3.4
 
 .. _#38: https://github.com/Findus23/pyLanguagetool/pull/38
-.. _#40: https://github.com/Findus23/pyLanguagetool/pull/38
+.. _#40: https://github.com/Findus23/pyLanguagetool/pull/40
 .. _#37: https://github.com/Findus23/pyLanguagetool/pull/37
 .. _@scheijan: https://github.com/scheijan
 .. _@codingjoe: https://github.com/codingjoe
