@@ -41,6 +41,8 @@ def init_config():
     p.add_argument('-l', '--lang', env_var='TEXTLANG', default="auto",
                    help="A language code like en or en-US, or auto to guess the language automatically (see preferredVariants below). For languages with variants (English, German, Portuguese) spell checking will only be activated when you specify the variant, e.g. en-GB instead of just en."
                    )
+    p.add_argument("--lines", env_var="LINES", action="store_true", help="show approximate line numbers of found mistakes. Noticably slow for large files")
+    p.add_argument("--only-sound", env_var="SOUND", action="store_true", help="Do not use heuristics to reduce line number search space. Noticably slower but only way to get accurate line numbers for files with many comments.")
     p.add_argument("-m", "--mother-tongue", env_var="MOTHER__TONGUE",
                    help="A language code of the user's native language, enabling false friends checks for some language pairs."
                    )
@@ -127,7 +129,52 @@ def get_input_text(config):
         return None, None
 
 
-def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False):
+def fuzzy_substring(needle, haystack):
+    """Calculates the fuzzy match of needle in haystack,
+    using a modified version of the Levenshtein distance
+    algorithm.
+    The function is modified from the levenshtein function
+    in the bktree module by Adam Hupp.
+
+    Taken and modified from:
+    http://ginstrom.com/scribbles/2007/12/01/fuzzy-substring-matching-with-levenshtein-distance-in-python/
+
+    Returns:
+        index of first most likely match (first match with minimal edit
+        distance)
+    """
+    m, n = len(needle), len(haystack)
+
+    # base cases
+    if m == 1:
+        return not needle in haystack
+    if not n:
+        return m
+
+    row1 = [0] * (n+1)
+    for i in range(0,m):
+        row2 = [i+1]
+        for j in range(0,n):
+            cost = ( needle[i] != haystack[j] )
+
+            row2.append( min(row1[j+1]+1, # deletion
+                               row2[j]+1, #insertion
+                               row1[j]+cost) #substitution
+                           )
+        # we don't need the original row1 in the future.
+        # In the end, we only want the last row.
+        row1 = row2
+
+    # the index of the lowest number in this row will tell us the location of
+    # the best match.
+    return row1.index(min(row1)) - len(needle), min(row1)
+
+
+def line_from_offset(offset: int, text: str) -> int:
+    return len(text[:offset].split('\n'))
+
+
+def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False, lines=False, sound=False, original=''):
     matches = response["matches"]
     language = response["language"]
     version = response["software"]["name"] + " " + response["software"]["version"]
@@ -153,6 +200,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
     cross = colored(u"\u2717", Fore.LIGHTRED_EX) + " "
 
     rule_explanations = []
+    last_match = 0
 
     for error in matches:
         context_object = error["context"]
@@ -160,15 +208,56 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
         length = context_object["length"]
         offset = context_object["offset"]
 
-        endpostion = offset + length
+        endposition = offset + length
+
+        # if we have an original text and want to search for approximate line
+        # numbers
+        if original and lines:
+            if sound:
+                # only use the minimal sound guesses we can make.
+                # makes calculation expensive, but necessary when there are
+                # large sections commented out
+                min_sound = max(last_match - len(context), 0)
+                offset_fuzz, m = fuzzy_substring(context[3:-3],
+                        original[min_sound:])
+
+                # the next error will have a higher offset than this one. Start
+                # searching here next time.
+                last_match = offset_fuzz
+            else:
+                # heuristically approximate our search space. Works fine for
+                # most markdown files.
+
+                # we need/want to overshoot to absolutely include the
+                # 'context'-snippet, but it's unclear by how much. Lower
+                # overshoot increases fuzzy matching speed
+                MAGIC_FACTOR = 1.1
+
+                # roughly estimate overshoot-offset. Not calculating it would mean
+                # considering the rest of the file, which is likely to be far
+                # bigger. Grows until about the last third of the file, and is
+                # limited by the end of the file after hitting the maximum
+                max_offset = int((error["offset"] + len(context)) * MAGIC_FACTOR)
+
+                offset_fuzz, m = fuzzy_substring(context[3:-3],
+                        original[error["offset"]:max_offset])
+
+            # from the offset, calculate the approximate location line number
+            line_fuzz = line_from_offset(offset_fuzz + offset + error["offset"], original)
+
+            # Note that this will always print an approximate line number, even
+            # if it is completely wrong. However, the score should be
+            # increadibly low for unlikely matches.
+            print("Score of [%.02f] around line %i" % (1 - m / len(context), line_fuzz))
+
         print(error["message"])
 
         print(
             indention[:2] +
             cross +
             colored(context[:offset], Fore.LIGHTBLACK_EX) +
-            colored(context[offset:endpostion], Fore.LIGHTRED_EX) +
-            colored(context[endpostion:], Fore.LIGHTBLACK_EX)
+            colored(context[offset:endposition], Fore.LIGHTRED_EX) +
+            colored(context[endposition:], Fore.LIGHTBLACK_EX)
         )
         print(
             indention +
@@ -184,7 +273,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
                     tick +
                     colored(context[:offset], Fore.LIGHTBLACK_EX) +
                     colored(replacement["value"], Fore.LIGHTGREEN_EX) +
-                    colored(context[endpostion:], Fore.LIGHTBLACK_EX)
+                    colored(context[endposition:], Fore.LIGHTBLACK_EX)
                 )
         rule = error["rule"]
         if rules:
@@ -259,7 +348,10 @@ def main():
                      not config["no_color"],
                      config["rules"],
                      config["rule_categories"],
-                     config["explain_rule"]
+                     config["explain_rule"],
+                     config["lines"],
+                     input_text,
+                     config["sound"]
                      )
 
         if len(response["matches"]) > 0:
