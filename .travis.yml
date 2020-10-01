@@ -11,8 +11,9 @@ before_install:
   - pip install poetry
   - pip install markdown2
   - pip install beautifulsoup4
-install:
   - poetry install
+install:
+  - pip install -e .
 # command to run tests
 script:
   - python -m pytest
