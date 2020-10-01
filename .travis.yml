@@ -8,6 +8,7 @@ python:
   - "pypy3.5-7.0"
 # command to install dependencies
 before_install:
+  - pip install --upgrade pip setuptools wheel
   - pip install poetry
   - poetry install --no-dev
   - poetry install --no-root
