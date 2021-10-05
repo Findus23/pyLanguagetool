@@ -1,6 +1,11 @@
 Changelog
 =========
 
+`0.9.2` (2021-10-05)
+--------------------
+* support Python 3.9 and 3.10
+* update dev-dependencies
+
 `0.9.1` (2020-10-01)
 --------------------
 * fixed value of POST parameter enabledOnly (`#42`_ by `@matze-dd`_)
