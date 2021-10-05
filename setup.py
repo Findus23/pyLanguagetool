@@ -20,15 +20,21 @@ setup(
     author_email='python@lw1.at',
     description='A python library and CLI for the LanguageTool JSON API',
     long_description=long_description,
+        project_urls={
+        "Documentation": "https://docs.pretalx.org",
+        "Source": "https://github.com/pretalx/pretalx",
+        "Issues": "https://github.com/pretalx/pretalx/issues",
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
         'Environment :: Console',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Text Processing :: Linguistic'

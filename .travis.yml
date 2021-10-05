@@ -1,11 +1,12 @@
 language: python
 dist: xenial
 python:
-  - "3.5"
   - "3.6"
   - "3.7"
   - "3.8"
-  - "pypy3.5-7.0"
+  - "3.9"
+  - "3.10"
+  - "pypy3"
 # command to install dependencies
 before_install:
   - pip install poetry
