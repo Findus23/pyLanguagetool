@@ -12,7 +12,7 @@ configargparse = ">=0.14.0"
 requests = ">=2.22.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "^7.0.1"
 docutils = "^0.17.1"
 markdown2 = "^2.3.8"
 beautifulsoup4 = "^4.8.2"

@@ -50,7 +50,7 @@ def _is_in_pwl(match, pwl):
 def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None,
           enabled_rules=None, disabled_rules=None,
           enabled_categories=None, disabled_categories=None,
-          enabled_only=False, verbose=False,
+          enabled_only=False, picky=False, verbose=False,
           pwl=None,
           **kwargs):
     """
@@ -98,6 +98,9 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
             If ``True``, only the rules and categories whose IDs are specified
             with ``enabledRules`` or ``enabledCategories`` are enabled.
             Defaults to ``False``.
+
+        picky (bool):
+            If enabled, addition rules are activated.
 
         verbose (bool):
             If ``True``, a more verbose output will be printed. Defaults to
@@ -181,6 +184,8 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
         post_parameters["disabledCategories"] = disabled_categories
     if enabled_only:
         post_parameters["enabledOnly"] = 'true'
+    if picky:
+        post_parameters["level"] = 'picky'
 
     r = requests.post(api_url + "check", data=post_parameters)
     if r.status_code != 200:

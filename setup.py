@@ -47,7 +47,7 @@ setup(
     keywords="languagetool spell grammar checker",
     entry_points={
         'console_scripts': [
-            'pylanguagetool=pylanguagetool:main',
+            'pylanguagetool=pylanguagetool.cli:main',
         ],
     },
 
