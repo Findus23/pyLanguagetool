@@ -1,23 +1,48 @@
-[tool.poetry]
-name = "pylanguagetool"
-version = "0.9.0"
-description = "A python library and CLI for the LanguageTool JSON API"
-authors = ["Lukas Winkler <git@lw1.at>"]
-license = "MIT"
-
-[tool.poetry.dependencies]
-python = ">=3.6,<3.11"
-colorama = ">=0.4.1"
-configargparse = ">=0.14.0"
-requests = ">=2.22.0"
-
-[tool.poetry.dev-dependencies]
-pytest = "^7.0.1"
-docutils = "^0.17.1"
-markdown2 = "^2.3.8"
-beautifulsoup4 = "^4.8.2"
-sphinx = "^4.2.0"
-
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyLanguagetool"
+version = "0.10.0"
+authors = [
+    { name = "Lukas Winkler", email = "python@lw1.at" }
+]
+license = { text = "MIT" }
+description = "A python library and CLI for the LanguageTool JSON API"
+keywords = ["languagetool", "spell", "grammar", "checker"]
+readme = "README.rst"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = [
+    "colorama>=0.4.1",
+    "configargparse>=0.14.0",
+    "requests>=2.22.0",
+]
+
+[project.urls]
+Homepage = "https://pylanguagetool.lw1.at/"
+Documentation = "https://docs.pretalx.org"
+Source = "https://github.com/Findus23/pyLanguagetool/"
+Issues = "https://github.com/Findus23/pyLanguagetool/issues"
+
+[project.optional-dependencies]
+dev = ["pytest", "sphinx"]
+optional = ["beautifulsoup4", "markdown2", "docutils"]
+
+[project.scripts]
+pylanguagetool = "pylanguagetool.cli:main"
+
