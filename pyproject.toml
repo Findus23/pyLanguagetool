@@ -34,8 +34,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://pylanguagetool.lw1.at/"
-Documentation = "https://docs.pretalx.org"
+Documentation = "https://pylanguagetool.lw1.at/"
 Source = "https://github.com/Findus23/pyLanguagetool/"
 Issues = "https://github.com/Findus23/pyLanguagetool/issues"
 
