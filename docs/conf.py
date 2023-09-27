@@ -4,7 +4,7 @@ import sys
 from pkg_resources import get_distribution
 
 project = "pyLanguagetool"
-copyright = "2017, Lukas Winkler"
+copyright = "2023, Lukas Winkler"
 release = get_distribution('pylanguagetool').version
 version = '.'.join(release.split('.')[:2])
 
@@ -32,7 +32,7 @@ latex_elements = {
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    "requests": ("https://2.python-requests.org/en/master/", None),
+    "requests": ("https://docs.python-requests.org/en/latest/", None),
 }
 
 

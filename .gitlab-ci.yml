@@ -1,4 +1,4 @@
-image: python:3.10
+image: python:3.11
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
@@ -6,50 +6,36 @@ cache:
   paths:
     - .venv
     - .cache/pip/
-    
+
 before_script:
-  - pip install poetry
-  - pip install pytest
-  - poetry config virtualenvs.in-project true
-  - poetry install
-#  - .venv/bin/python setup.py install
+  - pip install .[dev]
+  - pip install .[optional]
 
 tests:
   stage: tests
-  script: poetry run python -m pytest  --junitxml=junit.xml
+  script: python -m pytest  --junitxml=junit.xml
   artifacts:
     reports:
       junit: junit.xml
 
 
-check:
-  stage: check
-  script: 
-    - poetry run python setup.py check -ms
-#    - .venv/bin/pylanguagetool --help
 
-sdist:
+build:
   stage: build
-  script: poetry run python setup.py sdist
+  before_script:
+    - pip install --upgrade build
+  script: python3 -m build
   artifacts:
-    name: sdist
+    name: build
     paths:
       - dist
 
-
-bdist:
-  stage: build
-  script: poetry run python setup.py bdist_wheel
-  artifacts:
-    name: bdist
-    paths:
-      - dist
 
 
 docs:
   stage: docs
   script:
-    - poetry run python setup.py build_sphinx -W -b dirhtml
+    - sphinx-build -M dirhtml docs/ docs/_build/
 #    - .venv/bin/pylanguagetool --pwl spelling.txt --disabled-rules=WHITESPACE_RULE README.rst
   artifacts:
     name: docs
@@ -60,7 +46,7 @@ deploy_docs:
   stage: deploy
   tags:
     - shell
-  script: 
+  script:
     - cp -r docs/_build/dirhtml /var/www/pylanguagetool/
 
 stages:
