@@ -1,7 +1,7 @@
 ==============
 pyLanguagetool
 ==============
-|travis| |license| |latestrelease| |pypi_versions|
+|gitlab-ci| |license| |latestrelease| |pypi_versions|
 
 A python library and CLI for the LanguageTool_ `JSON API`_.
 
@@ -142,8 +142,8 @@ Parameters
 .. |latestrelease| image:: https://img.shields.io/pypi/v/pyLanguagetool.svg
     :target: https://pypi.python.org/pypi/pyLanguagetool
     :alt: Latest Version
-.. |travis| image:: https://img.shields.io/travis/Findus23/pyLanguagetool.svg
-    :target: https://travis-ci.org/Findus23/pyLanguagetool
+.. |gitlab-ci| image:: https://git.lw1.at/open-source/pylanguagetool/badges/master/pipeline.svg
+    :target: https://git.lw1.at/open-source/pylanguagetool/-/commits/master
 .. |pypi_versions| image:: https://img.shields.io/pypi/pyversions/pylanguagetool.svg
     :target: https://pypi.python.org/pypi/pyLanguagetool
 

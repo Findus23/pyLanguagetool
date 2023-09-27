@@ -7,11 +7,11 @@ cache:
     - .venv
     - .cache/pip/
 
-before_script:
-  - pip install .[dev]
-  - pip install .[optional]
 
 tests:
+  before_script:
+    - pip install .[dev]
+    - pip install .[optional]
   stage: tests
   script: python -m pytest  --junitxml=junit.xml
   artifacts:
@@ -33,6 +33,9 @@ build:
 
 
 docs:
+  before_script:
+    - pip install .[dev]
+    - pip install .[optional]
   stage: docs
   script:
     - sphinx-build -M dirhtml docs/ docs/_build/
