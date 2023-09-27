@@ -1,7 +1,7 @@
 ==============
 pyLanguagetool
 ==============
-|travis| |license| |latestrelease| |pypi_versions|
+|gitlab-ci| |license| |latestrelease| |pypi_versions|
 
 A python library and CLI for the LanguageTool_ `JSON API`_.
 
