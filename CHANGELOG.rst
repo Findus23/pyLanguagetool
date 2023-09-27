@@ -1,6 +1,13 @@
 Changelog
 =========
 
+`0.10.0` (2023-09-27)
+---------------------
+
+* no real code changes
+* update packaging to use pyproject.toml
+* update CI to test on Python 3.11
+
 `0.9.2` (2021-10-05)
 --------------------
 * support Python 3.9 and 3.10
