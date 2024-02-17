@@ -109,21 +109,20 @@ def get_input_text(config):
             tuple will be none.
 
     """
-    if not sys.stdin.isatty():  # if piped into script
+    if not sys.stdin.isatty() and not config["input file"]:  # if piped into script
         lines = [line.rstrip() for line in sys.stdin.readlines() if line.rstrip()]
         return "\n".join(lines), None  # read text from pipe and remove empty lines
-    elif config["clipboard"]:
+    if config["clipboard"]:
         return get_clipboard(), None
-    else:
-        if config["input file"]:
-            extension = os.path.splitext(config["input file"])[1][1:]  # get file extention without .
-            try:
-                with open(config["input file"], 'r') as myfile:
-                    return myfile.read(), extension
-            except UnicodeDecodeError:
-                print("can't read text")
-                sys.exit(1)
+    if not config["input file"]:
         return None, None
+    extension = os.path.splitext(config["input file"])[1][1:]  # get file extention without .
+    try:
+        with open(config["input file"], 'r') as myfile:
+            return myfile.read(), extension
+    except UnicodeDecodeError:
+        print("can't read text")
+        sys.exit(1)
 
 
 def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False):
@@ -263,4 +262,3 @@ def main():
 
         if len(response["matches"]) > 0:
             sys.exit(1)
-
