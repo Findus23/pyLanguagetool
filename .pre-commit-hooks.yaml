@@ -6,3 +6,4 @@
     - markdown2
     - beautifulsoup4
   language: python
+  types: [text]
