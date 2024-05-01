@@ -4,6 +4,7 @@ A python library and CLI tool for the LanguageTool JSON API.
 import os
 import sys
 from pprint import pprint
+from typing import List, Union, Tuple
 
 import configargparse
 import pkg_resources
@@ -31,7 +32,7 @@ def init_config():
                    help="if not plaintext")
     p.add_argument("-u", "--explain-rule", env_var="EXPLAIN_RULE", action="store_true", default=False,
                    help="print URLs with more information about rules")
-    p.add_argument('input file', help='input file', nargs='?')
+    p.add_argument('input files', help='input file(s)', nargs='*')
     p.add_argument("-r", "--rules", env_var="RULES", action='store_true', default=False,
                    help="show the matching rules")
     p.add_argument("--rule-categories", env_var="RULE_CATEGORIES", action='store_true', default=False,
@@ -98,32 +99,35 @@ def get_clipboard():
     return clipboard
 
 
-def get_input_text(config):
+def get_input_text(config) -> List[Tuple[Union[None, str], Union[None, str]]]:
     """
-    Return text from stdin, clipboard or file.
+    Return text from stdin, clipboard or file(s).
 
     Returns:
-        Tuple[str, str]:
-            A tuple contain of the text and an optional file extension.
+        List[Tuple[Union[None, str], Union[None, str]]]:
+            A list of tuples that contain the text and an optional file extension.
             If the text does not come from a file, the extension part of the
             tuple will be none.
 
     """
-    if not sys.stdin.isatty() and not config["input file"]:  # if piped into script
+    if not sys.stdin.isatty() and not config["input files"]:  # if piped into script
         lines = [line.rstrip() for line in sys.stdin.readlines() if line.rstrip()]
-        return "\n".join(lines), None  # read text from pipe and remove empty lines
+        return [("\n".join(lines), None)]  # read text from pipe and remove empty lines
     if config["clipboard"]:
-        return get_clipboard(), None
-    if not config["input file"]:
-        return None, None
-    extension = os.path.splitext(config["input file"])[1][1:]  # get file extention without .
-    try:
-        with open(config["input file"], 'r') as myfile:
-            return myfile.read(), extension
-    except UnicodeDecodeError:
-        print("can't read text")
-        sys.exit(1)
+        return [(get_clipboard(), None)]
+    if not config["input files"]:
+        return [(None, None)]
 
+    texts = []
+    for filename in config["input files"]:
+        extension = os.path.splitext(filename)[1][1:]  # get file extention without .
+        try:
+            with open(filename, 'r') as myfile:
+                texts.append((myfile.read(), extension))
+        except UnicodeDecodeError:
+            print(f"can't read text of {filename}")
+            sys.exit(1)
+    return texts
 
 def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False):
     matches = response["matches"]
@@ -219,46 +223,50 @@ def main():
         with open(config['pwl'], 'r') as fs:
             config['pwl'] = [w.strip() for w in fs.readlines()]
 
-    input_text, inputtype = get_input_text(config)
-    if not input_text:
+    input_text_type = get_input_text(config)
+    if not input_text_type:
         argparser.print_usage()
         print("input file is required")
         sys.exit(2)
-    if config["input_type"]:
-        inputtype = config["input_type"]
-    if inputtype == "tex":
+
+    cli_input_types = [ext for _, ext in input_text_type]
+    if config["input_type"] == "tex" or "tex" in cli_input_types:
         print("pyLanguagetool doesn't support LaTeX out of the box.")
         print("But it doesn't have to:")
         print("You can simply use the output of detex")
-        if config["input file"]:
-            print("    $ detex {} | pylanguagetool".format(config["input file"]))
+        if config["input files"]:
+            print("    $ detex {} | pylanguagetool".format(config["input files"]))
         print("or use the languagetool integration in TeXstudio.")
         sys.exit(3)
-    check_text = converters.convert(input_text, inputtype)
-    if config["single_line"]:
-        found = False
-        for line in check_text.splitlines():
-            response = api.check(line, **config)
+
+    found_multiple_files = False
+    for input_text, inputtype in input_text_type:
+        check_text = converters.convert(input_text, inputtype)
+        if config["single_line"]:
+            found = False
+            for line in check_text.splitlines():
+                response = api.check(line, **config)
+                print_errors(response,
+                             config["api_url"],
+                             not config["no_color"],
+                             config["rules"],
+                             config["rule_categories"]
+                             )
+                if len(response["matches"]) > 0:
+                    found = True
+            if found:
+                sys.exit(1)
+        else:
+            response = api.check(check_text, **config)
             print_errors(response,
                          config["api_url"],
                          not config["no_color"],
                          config["rules"],
-                         config["rule_categories"]
+                         config["rule_categories"],
+                         config["explain_rule"]
                          )
+
             if len(response["matches"]) > 0:
-                found = True
-        if found:
-            sys.exit(1)
-
-    else:
-        response = api.check(check_text, **config)
-        print_errors(response,
-                     config["api_url"],
-                     not config["no_color"],
-                     config["rules"],
-                     config["rule_categories"],
-                     config["explain_rule"]
-                     )
-
-        if len(response["matches"]) > 0:
+                found_multiple_files = True
+        if found_multiple_files:
             sys.exit(1)

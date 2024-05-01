@@ -1,0 +1,9 @@
+- id: pylanguagetool
+  name: Spellcheck with Languagetool
+  description: Checks the spelling
+  entry: pylanguagetool
+  additional_dependencies:
+    - markdown2
+    - beautifulsoup4
+  language: python
+  types: [text]
