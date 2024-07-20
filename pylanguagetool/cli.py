@@ -17,8 +17,8 @@ indention = " " * 4
 def init_config():
     p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"],
                                  config_file_parser_class=CustomConfigFileParser)
-    p.add_argument("-V", "--version", default=False, action='store_true')
-    p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true')
+    p.add_argument("-V", "--version", default=False, action='store_true', help="print version and exit")
+    p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true', help="verbose output")
     p.add_argument("-a", "--api-url", env_var="API_URL", default="https://languagetool.org/api/v2/",
                    help="the URL of the v2 languagetool API, should end with '/v2/'")
     p.add_argument("--no-color", env_var="NO_COLOR", action='store_true', default=False, help="don't color output")
