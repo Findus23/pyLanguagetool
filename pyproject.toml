@@ -45,3 +45,5 @@ optional = ["beautifulsoup4", "markdown2", "docutils"]
 [project.scripts]
 pylanguagetool = "pylanguagetool.cli:main"
 
+[tool.setuptools]
+py-modules = ["pylanguagetool"]
