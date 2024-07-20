@@ -6,7 +6,7 @@ import sys
 from pprint import pprint
 
 import configargparse
-import pkg_resources
+from importlib.metadata import version
 from colorama import Fore, init as init_colors
 
 from pylanguagetool import converters, CustomConfigFileParser, api
@@ -66,7 +66,7 @@ def init_config():
 
     c = vars(p.parse_args())
     if c["version"]:
-        print(pkg_resources.get_distribution('pylanguagetool').version)
+        print(version('pylanguagetool'))
         exit()
     if c["enabled_only"] and (c["disabled_categories"] or c["disabled_rules"]):
         print("disabled not allowed")  # TODO: ?
