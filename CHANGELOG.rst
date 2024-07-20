@@ -1,6 +1,13 @@
 Changelog
 =========
 
+`0.10.1` (2024-07-20)
+---------------------
+
+* add shell completion config files
+* don't use deprecated pkg_resources
+* only read from stdin if no input file has been specified
+
 `0.10.0` (2023-09-27)
 ---------------------
 

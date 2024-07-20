@@ -1,0 +1,25 @@
+{% extends "!base.html" %}
+{% block extrahead %}
+{{ super() }}
+<!-- Matomo -->
+<script type="text/javascript">
+    var _paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['disableCookies']);
+    _paq.push(['setRequestMethod', 'POST']);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u = "https://matomo.lw1.at/";
+        _paq.push(['setTrackerUrl', u + 'statistics.php']);
+        _paq.push(['setSiteId', '24']);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'statistics.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+</script>
+<!-- End Matomo Code -->
+{% endblock %}
