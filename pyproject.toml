@@ -12,7 +12,7 @@ license = { text = "MIT" }
 description = "A python library and CLI for the LanguageTool JSON API"
 keywords = ["languagetool", "spell", "grammar", "checker"]
 readme = "README.rst"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
