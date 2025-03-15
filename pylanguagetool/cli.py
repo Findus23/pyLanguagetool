@@ -35,7 +35,7 @@ def init_config() -> tuple[dict[str, Any], ArgumentParser]:
                    help="if not plaintext")
     p.add_argument("-u", "--explain-rule", env_var="EXPLAIN_RULE", action="store_true", default=False,
                    help="print URLs with more information about rules")
-    p.add_argument('input file', help='input file', nargs='?')
+    p.add_argument('input files', help='input file(s)', nargs='*')
     p.add_argument("-r", "--rules", env_var="RULES", action='store_true', default=False,
                    help="show the matching rules")
     p.add_argument("--rule-categories", env_var="RULE_CATEGORIES", action='store_true', default=False,
@@ -105,31 +105,33 @@ def get_clipboard() -> str:
     return clipboard
 
 
-def get_input_text(config: dict[str, Any]) -> tuple[Optional[str], Optional[str]]:
+def get_input_text(config: dict[str, Any]) -> list[tuple[str, Optional[str]]]:
     """
     Return text from stdin, clipboard or file.
 
     Returns:
         tuple[Optional[str], Optional[str]]:
-            A tuple contain of the text and an optional file extension.
-            If the text does not come from a file, the extension part of the
+            A tuple contain of the text and an optional filename.
+            If the text does not come from a file, the filename part of the
             tuple will be none.
 
     """
-    if not sys.stdin.isatty() and not config["input file"]:  # if piped into script
+    if not sys.stdin.isatty() and not config["input files"]:  # if piped into script
         lines = [line.rstrip() for line in sys.stdin.readlines() if line.rstrip()]
-        return "\n".join(lines), None  # read text from pipe and remove empty lines
+        return [("\n".join(lines), None)]  # read text from pipe and remove empty lines
     if config["clipboard"]:
-        return get_clipboard(), None
-    if not config["input file"]:
-        return None, None
-    extension = os.path.splitext(config["input file"])[1][1:]  # get file extention without .
-    try:
-        with open(config["input file"]) as myfile:
-            return myfile.read(), extension
-    except UnicodeDecodeError:
-        print("can't read text")
-        sys.exit(1)
+        return [(get_clipboard(), None)]
+    if not config["input files"]:
+        return []
+    inputs = []
+    for filename in config["input files"]:
+        try:
+            with open(filename) as myfile:
+                inputs.append((myfile.read(), filename))
+        except UnicodeDecodeError:
+            print("can't read text")
+            sys.exit(1)
+    return inputs
 
 
 def print_errors(response, api_url: str, print_color: bool = True, rules: bool = False,
@@ -236,52 +238,60 @@ def main() -> None:
     else:
         config['pwl'] = []
 
-    input_text, inputtype = get_input_text(config)
-    if not input_text:
+    inputs = get_input_text(config)
+    if not inputs:
         argparser.print_usage()
         print("input file is required")
         sys.exit(2)
-    if config["input_type"]:
-        inputtype = config["input_type"]
-    if inputtype == "tex":
-        print("pyLanguagetool doesn't support LaTeX out of the box.")
-        print("But it doesn't have to:")
-        print("You can simply use the output of detex")
-        if config["input file"]:
-            print(f"    $ detex {config['input file']} | pylanguagetool")
-        print("or use the languagetool integration in TeXstudio.")
-        sys.exit(3)
-    check_text = converters.convert(input_text, inputtype)
-    config_not_needed_in_api = [
-        "version", "no_color", "clipboard", "single_line",
-        "input_type", "input file", "explain_rule", "rules",
-        "rule_categories"
-    ]
-    config_for_api = {k: v for k, v in config.items() if k not in config_not_needed_in_api}
-    if config["single_line"]:
-        found = False
-        for line in check_text.splitlines():
-            response = api.check(line, **config_for_api)
+    found_at_least_one_error = False
+    for i, (input_text, filename) in enumerate(inputs):
+        inputtype = None
+        if filename:
+            inputtype = os.path.splitext(filename)[1][1:]
+        if config["input_type"]:
+            inputtype = config["input_type"]
+        if inputtype == "tex":
+            print("pyLanguagetool doesn't support LaTeX out of the box.")
+            print("But it doesn't have to:")
+            print("You can simply use the output of detex")
+            if input_text:
+                print(f"    $ detex {filename} | pylanguagetool")
+            print("or use the languagetool integration in TeXstudio.")
+            sys.exit(3)
+        check_text = converters.convert(input_text, inputtype)
+        if len(inputs) > 1:
+            print(filename)
+        config_not_needed_in_api = [
+            "version", "no_color", "clipboard", "single_line",
+            "input_type", "input files", "explain_rule", "rules",
+            "rule_categories"
+        ]
+        config_for_api = {k: v for k, v in config.items() if k not in config_not_needed_in_api}
+        if config["single_line"]:
+            for line in check_text.splitlines():
+                response = api.check(line, **config_for_api)
+                print_errors(response,
+                             config["api_url"],
+                             not config["no_color"],
+                             config["rules"],
+                             config["rule_categories"]
+                             )
+                if len(response["matches"]) > 0:
+                    found_at_least_one_error = True
+
+        else:
+            response = api.check(check_text, **config_for_api)
             print_errors(response,
                          config["api_url"],
                          not config["no_color"],
                          config["rules"],
-                         config["rule_categories"]
+                         config["rule_categories"],
+                         config["explain_rule"]
                          )
+
             if len(response["matches"]) > 0:
-                found = True
-        if found:
-            sys.exit(1)
-
-    else:
-        response = api.check(check_text, **config_for_api)
-        print_errors(response,
-                     config["api_url"],
-                     not config["no_color"],
-                     config["rules"],
-                     config["rule_categories"],
-                     config["explain_rule"]
-                     )
-
-        if len(response["matches"]) > 0:
-            sys.exit(1)
+                found_at_least_one_error = True
+        if i < len(inputs) - 1:
+            print()
+    if found_at_least_one_error:
+        sys.exit(1)

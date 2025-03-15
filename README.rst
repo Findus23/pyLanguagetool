@@ -79,10 +79,10 @@ Parameters
                           [--disabled-categories DISABLED_CATEGORIES]
                           [--enabled-only] [--picky] [-U USERNAME] [-P API_KEY]
                           [--pwl PWL]
-                          [input file]
+                          [input files ...]
 
     positional arguments:
-      input file            input file
+      input files           input file(s)
 
     options:
       -h, --help            show this help message and exit

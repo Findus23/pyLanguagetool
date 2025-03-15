@@ -222,5 +222,4 @@ def check(
             match for match in matches
             if not _is_in_pwl(match, pwl)
         ]
-    print(print(data))
     return data

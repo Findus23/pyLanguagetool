@@ -8,6 +8,14 @@ Changelog
 * fix build
 
   * sorry for leaving the broken 0.10.1 version unfixed for so long
+* some code cleanup
+* support multiple input files
+
+  * thanks to `@Roald87`_ for the suggestion and initial implementation (`#52`_, `#49`_)
+
+.. _@Roald87: https://github.com/Roald87
+.. _#52: https://github.com/Findus23/pyLanguagetool/pull/52
+.. _#49: https://github.com/Findus23/pyLanguagetool/pull/49
 
 
 `0.10.1` (2024-07-20)

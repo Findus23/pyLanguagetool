@@ -5,11 +5,12 @@ Support spellchecking various file formats by converting them to plain text
 import json
 import sys
 import xml.etree.ElementTree
+from typing import Optional
 
 supported_extensions = ["txt", "html", "md", "markdown", "rst", "ipynb", "json", "xliff"]
 
 
-def convert(source: str, texttype: str) -> str:
+def convert(source: str, texttype: Optional[str]) -> str:
     """
     Convert files of various types to plaintext
 
