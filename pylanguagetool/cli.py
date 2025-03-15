@@ -3,10 +3,10 @@ A python library and CLI tool for the LanguageTool JSON API.
 """
 import os
 import sys
+from importlib.metadata import version
 from pprint import pprint
 
 import configargparse
-from importlib.metadata import version
 from colorama import Fore, init as init_colors
 
 from pylanguagetool import converters, CustomConfigFileParser, api
@@ -56,6 +56,9 @@ def init_config():
                    help="enable only the rules and categories whose IDs are specified with --enabled-rules or --enabled-categories"
                    )
     p.add_argument("--picky", action='store_true', default=False, help="if enabled, additional rules will be activated")
+    p.add_argument("-U", "--username", env_var="USERNAME",
+                   help="For languagetool.org Premium API. Your username/email as used to log in at languagetool.org")
+    p.add_argument("-P", "--api-key", env_var="API_KEY", help="For languagetool.org Premium API.")
     p.add_argument(
         '--pwl', '--personal-word-list',
         env_var='PERSONAL_WORD_LIST', help=(

@@ -77,7 +77,8 @@ Parameters
                           [-d DISABLED_RULES]
                           [--enabled-categories ENABLED_CATEGORIES]
                           [--disabled-categories DISABLED_CATEGORIES]
-                          [--enabled-only] [--picky] [--pwl PWL]
+                          [--enabled-only] [--picky] [-U USERNAME] [-P API_KEY]
+                          [--pwl PWL]
                           [input file]
 
     positional arguments:
@@ -133,6 +134,12 @@ Parameters
       --enabled-only        enable only the rules and categories whose IDs are
                             specified with --enabled-rules or --enabled-categories
       --picky               if enabled, additional rules will be activated
+      -U, --username USERNAME
+                            For languagetool.org Premium API. Your username/email
+                            as used to log in at languagetool.org [env var:
+                            USERNAME]
+      -P, --api-key API_KEY
+                        For languagetool.org Premium API. [env var: API_KEY]
       --pwl, --personal-word-list PWL
                             File name of personal dictionary. A private dictionary
                             can be used to add special words that would otherwise

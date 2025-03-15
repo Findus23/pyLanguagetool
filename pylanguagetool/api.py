@@ -51,7 +51,7 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
           enabled_rules=None, disabled_rules=None,
           enabled_categories=None, disabled_categories=None,
           enabled_only=False, picky=False, verbose=False,
-          pwl=None,
+          pwl=None, username=None, api_key=None,
           **kwargs):
     """
     Check given text and return API response as a dictionary.
@@ -186,6 +186,13 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
         post_parameters["enabledOnly"] = 'true'
     if picky:
         post_parameters["level"] = 'picky'
+    if username or api_key:
+        if not username or not api_key:
+            raise ValueError("When specifying username or apikey, you must specify both")
+        if api_url != "https://languagetool.org/api/v2/":
+            raise ValueError("Premium API only works when using languagetool.org")
+        post_parameters["username"] = username
+        post_parameters["apiKey"] = api_key
 
     r = requests.post(api_url + "check", data=post_parameters)
     if r.status_code != 200:
