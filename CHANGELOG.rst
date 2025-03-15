@@ -1,7 +1,8 @@
 Changelog
 =========
 
-'0.11.0` (2025-03-15)
+`0.11.0` (2025-03-15)
+---------------------
 
 * add support for Python 3.13
 * drop support for Python 3.8
