@@ -238,10 +238,16 @@ def main():
         print("or use the languagetool integration in TeXstudio.")
         sys.exit(3)
     check_text = converters.convert(input_text, inputtype)
+    config_not_needed_in_api = [
+        "version", "no_color", "clipboard", "single_line",
+        "input_type", "input file", "explain_rule", "rules",
+        "rule_categories"
+    ]
+    config_for_api = {k: v for k, v in config.items() if k not in config_not_needed_in_api}
     if config["single_line"]:
         found = False
         for line in check_text.splitlines():
-            response = api.check(line, **config)
+            response = api.check(line, **config_for_api)
             print_errors(response,
                          config["api_url"],
                          not config["no_color"],
@@ -254,7 +260,7 @@ def main():
             sys.exit(1)
 
     else:
-        response = api.check(check_text, **config)
+        response = api.check(check_text, **config_for_api)
         print_errors(response,
                      config["api_url"],
                      not config["no_color"],

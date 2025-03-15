@@ -51,8 +51,7 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
           enabled_rules=None, disabled_rules=None,
           enabled_categories=None, disabled_categories=None,
           enabled_only=False, picky=False, verbose=False,
-          pwl=None, username=None, api_key=None,
-          **kwargs):
+          pwl=None, username=None, api_key=None):
     """
     Check given text and return API response as a dictionary.
 
@@ -109,6 +108,12 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
         pwl (List[str]):
             Personal world list. A custom dictionary of words that should be
             excluded from spell checking errors.
+
+        username (str):
+            For Premium API
+
+        api_key (str):
+            For Premium API
 
     Returns:
         dict:
