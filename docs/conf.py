@@ -77,4 +77,4 @@ def linkcode_resolve(domain, info):
         filename = '{}#L{:d}-L{:d}'.format(*find_source())
     except Exception:
         filename = info['module'].replace('.', '/') + '.py'
-    return "https://github.com/Findus23/pyLanguagetool/blob/master/{}".format(filename)
+    return f"https://github.com/Findus23/pyLanguagetool/blob/master/{filename}"

@@ -83,7 +83,7 @@ def test_cli(capsys):
         ],
     }
 
-    should_output = u"""German (Austria) detected (100% confidence)
+    should_output = """German (Austria) detected (100% confidence)
 
 Dieser Satz fängt nicht mit einem großgeschriebenen Wort an
   ✗ das ist ein est

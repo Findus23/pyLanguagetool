@@ -121,7 +121,7 @@ def get_input_text(config):
         return None, None
     extension = os.path.splitext(config["input file"])[1][1:]  # get file extention without .
     try:
-        with open(config["input file"], 'r') as myfile:
+        with open(config["input file"]) as myfile:
             return myfile.read(), extension
     except UnicodeDecodeError:
         print("can't read text")
@@ -150,8 +150,8 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
             , Fore.LIGHTBLACK_EX))
     print()
 
-    tick = colored(u"\u2713", Fore.LIGHTGREEN_EX) + " "
-    cross = colored(u"\u2717", Fore.LIGHTRED_EX) + " "
+    tick = colored("\u2713", Fore.LIGHTGREEN_EX) + " "
+    cross = colored("\u2717", Fore.LIGHTRED_EX) + " "
 
     rule_explanations = []
 
@@ -209,7 +209,7 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
             print(descr + ":" + " " * (col_len - len(descr)) + url)
         print()
 
-    print(colored("Text checked by {url} ({version})".format(url=api_url, version=version), Fore.LIGHTBLACK_EX))
+    print(colored(f"Text checked by {api_url} ({version})", Fore.LIGHTBLACK_EX))
 
 
 def main():
@@ -219,7 +219,7 @@ def main():
         print(sys.version)
 
     if config['pwl']:
-        with open(config['pwl'], 'r') as fs:
+        with open(config['pwl']) as fs:
             config['pwl'] = [w.strip() for w in fs.readlines()]
 
     input_text, inputtype = get_input_text(config)
