@@ -3,7 +3,7 @@ import sys
 
 from importlib.metadata import version
 project = "pyLanguagetool"
-copyright = "2023, Lukas Winkler"
+copyright = "2025, Lukas Winkler"
 release = version('pylanguagetool')
 version = '.'.join(release.split('.')[:2])
 

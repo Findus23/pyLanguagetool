@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyLanguagetool"
-version = "0.10.1"
+version = "0.11.0"
 authors = [
     { name = "Lukas Winkler", email = "python@lw1.at" }
 ]
@@ -12,17 +12,17 @@ license = { text = "MIT" }
 description = "A python library and CLI for the LanguageTool JSON API"
 keywords = ["languagetool", "spell", "grammar", "checker"]
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 classifiers = [
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
     "Environment :: Console",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Text Processing :: Linguistic",
@@ -39,7 +39,7 @@ Source = "https://github.com/Findus23/pyLanguagetool/"
 Issues = "https://github.com/Findus23/pyLanguagetool/issues"
 
 [project.optional-dependencies]
-dev = ["pytest", "sphinx"]
+dev = ["pytest", "sphinx", "furo"]
 optional = ["beautifulsoup4", "markdown2", "docutils"]
 
 [project.scripts]
