@@ -24,7 +24,7 @@ _pylanguagetool_99ddd2e4751833f8_complete()
 
     # completing for an option
     if [[ ${cur} == --* ]] ; then
-        opts="--api-url --clipboard --disabled-categories --disabled-rules --enabled-categories --enabled-only --enabled-rules --explain-rule --help --input-type --lang --mother-tongue --no-color --personal-word-list --picky --preferred-variants --rule-categories --rules --single-line --verbose --version"
+        opts="--api-key --api-url --clipboard --disabled-categories --disabled-rules --enabled-categories --enabled-only --enabled-rules --explain-rule --help --input-type --lang --mother-tongue --no-color --personal-word-list --picky --preferred-variants --rule-categories --rules --single-line --username --verbose --version"
 
         case "$com" in
 
@@ -50,5 +50,3 @@ _pylanguagetool_99ddd2e4751833f8_complete()
 }
 
 complete -o default -F _pylanguagetool_99ddd2e4751833f8_complete pylanguagetool
-
-test

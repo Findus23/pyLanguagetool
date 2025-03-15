@@ -70,7 +70,14 @@ def init_config() -> tuple[dict[str, Any], ArgumentParser]:
             ' can be used to add special words that would otherwise'
             ' be marked as spelling errors.'
         ))
-
+    if False:
+        from pycomplete import Completer
+        completer = Completer(p)
+        for s in ["fish", "zsh", "bash"]:
+            r = completer.render(shell=s)
+            with open(f"completions/pylanguagetool.{s}", "w") as f:
+                f.write(r)
+        exit()
     c = vars(p.parse_args())
     if c["version"]:
         print(version('pylanguagetool'))
