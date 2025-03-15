@@ -9,7 +9,7 @@ import xml.etree.ElementTree
 supported_extensions = ["txt", "html", "md", "markdown", "rst", "ipynb", "json", "xliff"]
 
 
-def convert(source, texttype):
+def convert(source: str, texttype: str) -> str:
     """
     Convert files of various types to plaintext
 
@@ -40,7 +40,7 @@ def convert(source, texttype):
     return source
 
 
-def html2text(html):
+def html2text(html: str) -> str:
     """
     convert HTML to plaintext by parsing it with BeautifulSoup and removing code
 
@@ -63,7 +63,7 @@ def html2text(html):
     return soup.get_text()
 
 
-def markdown2html(markdown):
+def markdown2html(markdown: str) -> str:
     """
     convert Markdown to HTML via ``markdown2``
 
@@ -83,7 +83,7 @@ def markdown2html(markdown):
     return markdown2.markdown(markdown)
 
 
-def ipynb2markdown(ipynb):
+def ipynb2markdown(ipynb: str) -> str:
     """
     Extract Markdown cells from iPython Notebook
 
@@ -102,7 +102,7 @@ def ipynb2markdown(ipynb):
     return markdown
 
 
-def rst2html(rst):
+def rst2html(rst: str) -> str:
     """
     convert reStructuredText to HTML with ``docutils``
 
@@ -121,7 +121,7 @@ def rst2html(rst):
     return publish_string(rst, writer_name="html5")
 
 
-def transifexjson2txt(jsondata):
+def transifexjson2txt(jsondata: str) -> str:
     """
     extract translations from Transifex JSON file
 
@@ -141,7 +141,7 @@ def transifexjson2txt(jsondata):
     return text
 
 
-def xliff2txt(source):
+def xliff2txt(source: str) -> str:
     """
     extract translations from ``XLIFF`` file
 
@@ -164,9 +164,9 @@ def xliff2txt(source):
     return text
 
 
-def notinstalled(package, convert_from, convert_to):
+def notinstalled(package: str, convert_from: str, convert_to: str) -> None:
     print(
-        """{package} is needed to convert {source} to {target}
+        f"""{package} is needed to convert {convert_from} to {convert_to}
 you can install it with pip:
-pip install {package}""".format(package=package, source=convert_from, target=convert_to)
+pip install {package}"""
     )

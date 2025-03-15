@@ -9,13 +9,13 @@ Simple usage::
     ...     api_url='https://languagetool.org/api/v2/',
     ...     lang='en-US',
     ... )
-    {'software': {'name': 'LanguageTool', 'version': '4.6-SNAPSHOT', 'buildDate': '2019-05-15 19:25', 'apiVersion': 1, 'premium': False, 'premiumHint': 'You might be missing errors only the Premium version can find. Contact us at support<at>languagetoolplus.com.', 'status': ''}, 'warnings': {'incompleteResults': False}, 'language': {'name': 'English (US)', 'code': 'en-US', 'detectedLanguage': {'name': 'English (US)', 'code': 'en-US', 'confidence': 0.561}}, 'matches': [{'message': 'Use "an" instead of \'a\' if the following word starts with a vowel sound, e.g. \'an article\', \'an hour\'', 'shortMessage': 'Wrong article', 'replacements': [{'value': 'an'}], 'offset': 8, 'length': 1, 'context': {'text': 'This is a example', 'offset': 8, 'length': 1}, 'sentence': 'This is a example', 'type': {'typeName': 'Other'}, 'rule': {'id': 'EN_A_VS_AN', 'description': "Use of 'a' vs. 'an'", 'issueType': 'misspelling', 'category': {'id': 'MISC', 'name': 'Miscellaneous'}}, 'ignoreForIncompleteSentence': False, 'contextForSureMatch': 1}]}
-
 """
+from typing import Optional
+
 import requests
 
 
-def get_languages(api_url):
+def get_languages(api_url: str) -> list[dict[str, str]]:
     """
     Return supported languages as a list of dictionaries.
 
@@ -23,7 +23,7 @@ def get_languages(api_url):
         api_url (str): API base url.
 
     Returns:
-        List[dict]:
+        list[dict]:
             Supported languages as a list of dictionaries.
 
             Each dictionary contains three keys, ``name``, ``code`` and
@@ -47,11 +47,15 @@ def _is_in_pwl(match, pwl):
     return word in pwl
 
 
-def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None,
-          enabled_rules=None, disabled_rules=None,
-          enabled_categories=None, disabled_categories=None,
-          enabled_only=False, picky=False, verbose=False,
-          pwl=None, username=None, api_key=None):
+def check(
+        input_text: str, api_url: str,
+        lang: str, pwl: list[str],
+        mother_tongue: Optional[str] = None,
+        preferred_variants: Optional[str] = None,
+        enabled_rules: Optional[str] = None, disabled_rules: Optional[str] = None,
+        enabled_categories: Optional[str] = None, disabled_categories: Optional[str] = None,
+        enabled_only: bool = False, picky: bool = False, verbose: bool = False,
+        username: Optional[str] = None, api_key: Optional[str] = None):
     """
     Check given text and return API response as a dictionary.
 
@@ -105,7 +109,7 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
             If ``True``, a more verbose output will be printed. Defaults to
             ``False``.
 
-        pwl (List[str]):
+        pwl (list[str]):
             Personal world list. A custom dictionary of words that should be
             excluded from spell checking errors.
 
@@ -125,23 +129,26 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
 
                 {
                     "language": {
-                        "code": "en-US",
+                        "name": "English (GB)",
+                        "code": "en-GB",
                         "detectedLanguage": {
-                            "code": "en-US",
+                            "name": "English (GB)",
+                            "code": "en-GB",
                             "confidence": 0.561,
-                            "name": "English (US)",
+                            "source": "fasttext",
                         },
-                        "name": "English (US)",
                     },
+                    "sentenceRanges": [[0, 17]],
+                    "extendedSentenceRanges": [
+                        {"from": 0, "to": 17, "detectedLanguages": [{"language": "en", "rate": 1.0}]}
+                    ],
                     "matches": [
                         {
-                            "context": {"length": 1, "offset": 8, "text": "This is a example"},
+                            "context": {"text": "This is a example", "offset": 8, "length": 1},
                             "contextForSureMatch": 1,
                             "ignoreForIncompleteSentence": False,
                             "length": 1,
-                            "message": "Use \"an\" instead of 'a' if the following word "
-                            "starts with a vowel sound, e.g. 'an article', 'an "
-                            "hour'",
+                            "message": "Use “an” instead of ‘a’ if the following word starts with a vowel sound, e.g.\xa0‘an article’, ‘an hour’.",
                             "offset": 8,
                             "replacements": [{"value": "an"}],
                             "rule": {
@@ -149,6 +156,11 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
                                 "description": "Use of 'a' vs. 'an'",
                                 "id": "EN_A_VS_AN",
                                 "issueType": "misspelling",
+                                "urls": [
+                                    {
+                                        "value": "https://languagetool.org/insights/post/indefinite-articles/"
+                                    }
+                                ],
                             },
                             "sentence": "This is a example",
                             "shortMessage": "Wrong article",
@@ -157,14 +169,12 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
                     ],
                     "software": {
                         "apiVersion": 1,
-                        "buildDate": "2019-05-15 19:25",
+                        "buildDate": "2024-09-27 11:27:57 +0200",
+                        "version": "6.5",  
                         "name": "LanguageTool",
                         "premium": False,
-                        "premiumHint": "You might be missing errors only the Premium "
-                        "version can find. Contact us at "
-                        "support<at>languagetoolplus.com.",
+                        "premiumHint": "You might be missing errors only the Premium version can find. Contact us at support<at>languagetoolplus.com.",
                         "status": "",
-                        "version": "4.6-SNAPSHOT",
                     },
                     "warnings": {"incompleteResults": False},
                 }
@@ -212,4 +222,5 @@ def check(input_text, api_url, lang, mother_tongue=None, preferred_variants=None
             match for match in matches
             if not _is_in_pwl(match, pwl)
         ]
+    print(print(data))
     return data

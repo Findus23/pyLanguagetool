@@ -11,7 +11,7 @@ CLI
 ---
 
 
-.. automodule:: pylanguagetool
+.. automodule:: pylanguagetool.cli
    :members:
 
 Converters

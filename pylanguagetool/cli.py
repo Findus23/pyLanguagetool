@@ -5,18 +5,22 @@ import os
 import sys
 from importlib.metadata import version
 from pprint import pprint
+from typing import Any, Optional
 
-import configargparse
 from colorama import Fore, init as init_colors
+from configargparse import ArgumentParser
 
 from pylanguagetool import converters, CustomConfigFileParser, api
 
 indention = " " * 4
 
 
-def init_config():
-    p = configargparse.ArgParser(default_config_files=["~/.config/pyLanguagetool.conf"],
-                                 config_file_parser_class=CustomConfigFileParser)
+def init_config() -> tuple[dict[str, Any], ArgumentParser]:
+    """
+    Create ArgumentParser object
+    """
+    p = ArgumentParser(default_config_files=["~/.config/pyLanguagetool.conf"],
+                       config_file_parser_class=CustomConfigFileParser)
     p.add_argument("-V", "--version", default=False, action='store_true', help="print version and exit")
     p.add_argument("-v", "--verbose", env_var="VERBOSE", default=False, action='store_true', help="verbose output")
     p.add_argument("-a", "--api-url", env_var="API_URL", default="https://languagetool.org/api/v2/",
@@ -83,7 +87,7 @@ def init_config():
     return c, p
 
 
-def get_clipboard():
+def get_clipboard() -> str:
     """
     Return text stored in the operating system's clipboard.
 
@@ -101,12 +105,12 @@ def get_clipboard():
     return clipboard
 
 
-def get_input_text(config):
+def get_input_text(config: dict[str, Any]) -> tuple[Optional[str], Optional[str]]:
     """
     Return text from stdin, clipboard or file.
 
     Returns:
-        Tuple[str, str]:
+        tuple[Optional[str], Optional[str]]:
             A tuple contain of the text and an optional file extension.
             If the text does not come from a file, the extension part of the
             tuple will be none.
@@ -128,7 +132,11 @@ def get_input_text(config):
         sys.exit(1)
 
 
-def print_errors(response, api_url, print_color=True, rules=False, rule_categories=False, explain_rule=False):
+def print_errors(response, api_url: str, print_color: bool = True, rules: bool = False,
+                 rule_categories: bool = False, explain_rule: bool = False) -> None:
+    """
+    Print output from API response
+    """
     matches = response["matches"]
     language = response["language"]
     version = response["software"]["name"] + " " + response["software"]["version"]
@@ -140,13 +148,14 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
         else:
             return text
 
+    lang_name = language["detectedLanguage"]["name"]
+    lang_confidence = language["detectedLanguage"]["confidence"] * 100
     print(colored(
-        "{} detected ({:.0f}% confidence)".format(language["detectedLanguage"]["name"],
-                                                  language["detectedLanguage"]["confidence"] * 100)
+        f"{lang_name} detected ({lang_confidence:.0f}% confidence)"
         , Fore.LIGHTBLACK_EX))
     if language["detectedLanguage"]["code"] != language["code"]:
         print(colored(
-            "checking as {} text because of setting".format(language["name"])
+            f"checking as {language['name']} text because of setting"
             , Fore.LIGHTBLACK_EX))
     print()
 
@@ -212,7 +221,10 @@ def print_errors(response, api_url, print_color=True, rules=False, rule_categori
     print(colored(f"Text checked by {api_url} ({version})", Fore.LIGHTBLACK_EX))
 
 
-def main():
+def main() -> None:
+    """
+    The main CLI entry point.
+    """
     config, argparser = init_config()
 
     if config["verbose"]:
@@ -221,6 +233,8 @@ def main():
     if config['pwl']:
         with open(config['pwl']) as fs:
             config['pwl'] = [w.strip() for w in fs.readlines()]
+    else:
+        config['pwl'] = []
 
     input_text, inputtype = get_input_text(config)
     if not input_text:
@@ -234,7 +248,7 @@ def main():
         print("But it doesn't have to:")
         print("You can simply use the output of detex")
         if config["input file"]:
-            print("    $ detex {} | pylanguagetool".format(config["input file"]))
+            print(f"    $ detex {config['input file']} | pylanguagetool")
         print("or use the languagetool integration in TeXstudio.")
         sys.exit(3)
     check_text = converters.convert(input_text, inputtype)
