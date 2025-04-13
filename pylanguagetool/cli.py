@@ -85,8 +85,6 @@ def init_config() -> tuple[dict[str, Any], ArgumentParser]:
     if c["enabled_only"] and (c["disabled_categories"] or c["disabled_rules"]):
         print("disabled not allowed")  # TODO: ?
     if c["preferred_variants"] and c["lang"] != "auto":
-        # print("You specified --preferred_variants but you didn't specify --language=auto")
-        # sys.exit(2)
         print('ignoring --preferred-variants as --lang is not set to "auto"')
         c["preferred_variants"] = None
     if c["verbose"]:

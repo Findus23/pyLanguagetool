@@ -136,8 +136,8 @@ def transifexjson2txt(jsondata: str) -> str:
     """
     data = json.loads(jsondata)
     text = ""
-    for category, content in data.items():
-        for key, value in content.items():
+    for _category, content in data.items():
+        for _key, value in content.items():
             text += value + "\n"
     return text
 
